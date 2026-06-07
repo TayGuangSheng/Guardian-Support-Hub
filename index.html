@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta
+    name="description"
+    content="Guardian Support Hub for Digital and Intelligence Service HR enquiries and support."
+  >
+  <title>Guardian Support Hub | Digital and Intelligence Service</title>
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/dis-favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://webchat.vica.gov.sg" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,600;0,14..32,700;1,14..32,300;1,14..32,400;1,14..32,600;1,14..32,700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- SGDS foundation files. The product theme overrides follow these imports. -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@govtechsg/sgds-web-component@3.21.0/themes/day.css"
+  >
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@govtechsg/sgds-web-component@3.21.0/css/sgds.css"
+  >
+  <link
+    href="https://webchat.vica.gov.sg/static/css/chat.css"
+    referrerpolicy="origin"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      /* DIS orange mapped to the complete SGDS product colour scale. */
+      --sgds-product-primary-100: #fff1ec;
+      --sgds-product-primary-200: #ffd8ca;
+      --sgds-product-primary-300: #ffb69d;
+      --sgds-product-primary-400: #ff8a62;
+      --sgds-product-primary-500: #f15a24;
+      --sgds-product-primary-600: #d44c00;
+      --sgds-product-primary-700: #b43b0f;
+      --sgds-product-primary-800: #8f2d08;
+      --sgds-product-primary-900: #6e2105;
+      --sgds-font-family-brand: "Inter", system-ui, sans-serif;
+      --dis-orange: #f15a24;
+      --dis-orange-dark: #b43b0f;
+      --dis-black: #111111;
+      --surface-subtle: #f7f7f7;
+      --surface-default: #ffffff;
+      --border-default: #b8b8b8;
+      --text-default: #1a1a1a;
+      --text-subtle: #525252;
+      --focus-ring: #60aaf4;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100svh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-default);
+      color: var(--text-default);
+      font-family: var(--sgds-font-family-brand);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    :focus-visible {
+      outline: 0.25rem solid var(--focus-ring);
+      outline-offset: 0.125rem;
+    }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 0.0625rem !important;
+      height: 0.0625rem !important;
+      padding: 0 !important;
+      margin: -0.0625rem !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 0.5rem;
+      left: 0.5rem;
+      z-index: 10000;
+      padding: 0.75rem 1rem;
+      border-radius: var(--sgds-border-radius-md, 0.5rem);
+      background: var(--dis-black);
+      color: #ffffff;
+      font-weight: 600;
+      transform: translateY(-180%);
+      transition: transform 160ms ease;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .app-header {
+      position: relative;
+      z-index: 10;
+      flex: 0 0 auto;
+    }
+
+    sgds-masthead,
+    sgds-mainnav {
+      display: block;
+    }
+
+    sgds-mainnav {
+      border-bottom: 0.25rem solid var(--dis-orange);
+    }
+
+    sgds-masthead:not(:defined) {
+      min-height: 2rem;
+      background: var(--surface-subtle);
+    }
+
+    sgds-mainnav:not(:defined) {
+      min-height: 5.25rem;
+      background: var(--surface-default);
+    }
+
+    .brand-lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.25rem;
+      min-width: 0;
+      color: var(--text-default);
+    }
+
+    .brand-logo {
+      display: block;
+      flex: 0 0 auto;
+      width: clamp(8.5rem, 12vw, 10.625rem);
+      height: auto;
+    }
+
+    .brand-title {
+      color: var(--text-default);
+      font-size: clamp(1.5rem, 2vw, 1.875rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      white-space: nowrap;
+    }
+
+    .chat-main {
+      position: relative;
+      flex: 1 1 auto;
+      min-width: 0;
+      min-height: 14rem;
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        linear-gradient(180deg, rgb(241 90 36 / 4%), transparent 9rem),
+        var(--surface-subtle);
+    }
+
+    /*
+     * VICA is designed as a floating widget. These rules pin its conversation
+     * canvas to the remaining viewport area beneath the SGDS application shell.
+     */
+    #webchat {
+      position: relative !important;
+      inset: auto !important;
+      width: 100% !important;
+      max-width: none !important;
+      height: 100% !important;
+      max-height: none !important;
+      min-width: 0 !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      background: var(--surface-subtle) !important;
+      color: var(--text-default);
+      font-family: var(--sgds-font-family-brand) !important;
+    }
+
+    #webchat > #CONVERSATION_HISTORY,
+    #webchat > .vica-chat-container,
+    #webchat > .webchat-container {
+      position: relative !important;
+      inset: auto !important;
+      width: 100% !important;
+      max-width: none !important;
+      height: 100% !important;
+      max-height: none !important;
+      min-width: 0 !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+
+    #webchat .vica-chat-container,
+    #webchat .webchat-container,
+    #webchat [role="dialog"] {
+      width: 100% !important;
+      max-width: none !important;
+      height: 100% !important;
+      max-height: none !important;
+      border-radius: 0 !important;
+    }
+
+    /*
+     * VICA maps the app-* attributes below to message colours. These semantic
+     * fallbacks keep its controls aligned with SGDS if generated classes change.
+     */
+    #webchat textarea,
+    #webchat input[type="text"],
+    #webchat input:not([type]) {
+      min-height: 3rem !important;
+      border: 0.0625rem solid var(--border-default) !important;
+      border-radius: var(--sgds-border-radius-md, 0.5rem) !important;
+      background: var(--surface-default) !important;
+      color: var(--text-default) !important;
+      caret-color: var(--dis-orange-dark) !important;
+      font-family: var(--sgds-font-family-brand) !important;
+    }
+
+    #webchat textarea::placeholder,
+    #webchat input::placeholder {
+      color: #686868 !important;
+      opacity: 1;
+    }
+
+    #webchat textarea:focus,
+    #webchat input[type="text"]:focus,
+    #webchat input:not([type]):focus {
+      border-color: var(--dis-orange-dark) !important;
+      outline: 0.25rem solid var(--focus-ring) !important;
+      outline-offset: 0.125rem !important;
+    }
+
+    #webchat button {
+      min-width: 2.75rem;
+      min-height: 2.75rem;
+      border-color: var(--dis-orange-dark) !important;
+      border-radius: var(--sgds-border-radius-md, 0.5rem) !important;
+      background-color: var(--dis-orange-dark) !important;
+      color: #ffffff !important;
+      font-family: var(--sgds-font-family-brand) !important;
+    }
+
+    #webchat button:hover:not(:disabled) {
+      border-color: var(--sgds-product-primary-800) !important;
+      background-color: var(--sgds-product-primary-800) !important;
+    }
+
+    #webchat button:focus-visible {
+      outline: 0.25rem solid var(--focus-ring) !important;
+      outline-offset: 0.125rem !important;
+    }
+
+    #webchat button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+    }
+
+    #webchat a {
+      color: #0269d0 !important;
+      text-decoration: underline;
+      text-underline-offset: 0.1875rem;
+    }
+
+    #webchat ::selection {
+      background: var(--sgds-product-primary-200);
+      color: var(--dis-black);
+    }
+
+    .chat-loader {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      display: grid;
+      place-items: center;
+      padding: 1.5rem;
+      background: var(--surface-subtle);
+      opacity: 1;
+      pointer-events: none;
+      transition: opacity 220ms ease, visibility 220ms ease;
+    }
+
+    .chat-loader[hidden] {
+      display: none;
+    }
+
+    .chat-loader__content {
+      width: calc(100vw - 3rem);
+      max-width: 20rem;
+      min-width: 0;
+      color: var(--text-subtle);
+      text-align: center;
+    }
+
+    .chat-loader__content p {
+      margin: 0.75rem 0 0;
+      font-size: 0.875rem;
+      overflow-wrap: anywhere;
+    }
+
+    .chat-loader sgds-spinner[hidden] {
+      display: none !important;
+    }
+
+    .vica-ready .chat-loader {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .noscript-message {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 1.5rem;
+      color: var(--text-default);
+      text-align: center;
+    }
+
+    @media (max-width: 48rem) {
+      .brand-lockup {
+        gap: 0.75rem;
+      }
+
+      .brand-logo {
+        width: 7rem;
+      }
+
+      .brand-title {
+        font-size: 1.375rem;
+      }
+
+    }
+
+    @media (max-width: 36rem) {
+      .brand-lockup {
+        gap: 0.625rem;
+      }
+
+      .brand-logo {
+        width: 5.75rem;
+      }
+
+      .brand-title {
+        font-size: 1.125rem;
+      }
+
+      #webchat button {
+        min-width: 3rem;
+        min-height: 3rem;
+      }
+    }
+
+    @media (max-height: 42rem) and (orientation: landscape) {
+      .chat-main {
+        min-height: 10rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+
+    @media print {
+      body::before {
+        content: "Guardian Support Hub chat is available online.";
+        display: block;
+        padding: 1rem;
+        color: #000000;
+      }
+
+      .app-header,
+      .chat-main {
+        display: none;
+      }
+    }
+  </style>
+
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/@govtechsg/sgds-web-component@3.21.0/index.umd.min.js"
+  ></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#webchat">Skip to chat</a>
+
+  <header class="app-header">
+    <sgds-masthead fluid></sgds-masthead>
+
+    <sgds-mainnav fluid expand="always" brandHref="#webchat">
+      <span class="brand-lockup" slot="brand">
+        <img
+          class="brand-logo"
+          width="340"
+          height="130"
+          alt="Digital and Intelligence Service"
+          src="assets/dis-logo.png"
+        >
+        <span class="brand-title">Guardian Support Hub</span>
+      </span>
+
+    </sgds-mainnav>
+  </header>
+
+  <main class="chat-main" aria-labelledby="page-title">
+    <h1 id="page-title" class="visually-hidden">Guardian Support Hub</h1>
+
+    <div
+      id="webchat"
+      app-id="ask-dis-hr"
+      app-name="Guardian Support Hub"
+      app-font-family="Inter"
+      app-base-font-size="16"
+      app-color="#B43B0F"
+      app-foreground-color-1="#FFFFFF"
+      app-background-color-2="#FFFFFF"
+      app-foreground-color-2="#1A1A1A"
+      app-canvas-background-color="#F7F7F7"
+      app-button-border-color="#B43B0F"
+      app-quick-reply-button-background-color="#FFFFFF"
+      app-auto-complete-background-color="#FFFFFF"
+      app-auto-complete-foreground-color="#1A1A1A"
+      app-auto-complete-hover-color="#FFF1EC"
+      app-auto-complete-divider-color="#D6D6D6"
+      app-recommendations-background-color="#FFFFFF"
+      app-recommendations-foreground-color="#1A1A1A"
+      app-recommendations-hover-color="#FFF1EC"
+      app-auto-launch="true"
+      app-force-fullscreen="true"
+      app-position-fixed="false"
+      app-remove-minimize-button="true"
+      app-remove-rounded-corner="true"
+      app-height="100%"
+      app-width="100%"
+      app-z-index="1"
+      app-footer-border-radius="0px"
+    ></div>
+
+    <div id="chat-loader" class="chat-loader" role="status" aria-live="polite">
+      <div class="chat-loader__content">
+        <sgds-spinner
+          id="chat-loader-spinner"
+          size="lg"
+          tone="brand"
+        ></sgds-spinner>
+        <p id="chat-loader-text">Connecting to Guardian Support Hub...</p>
+      </div>
+    </div>
+
+    <noscript>
+      <div class="noscript-message">
+        JavaScript is required to connect to Guardian Support Hub.
+      </div>
+    </noscript>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var host;
+      var loader;
+      var loaderSpinner;
+      var loaderText;
+      var observer;
+      var ready = false;
+      var lastMaximizeAt = 0;
+
+      function dispatchMaximize(target) {
+        if (!target || typeof target.dispatchEvent !== "function") {
+          return;
+        }
+
+        target.dispatchEvent(new CustomEvent("VAMaximize", {
+          bubbles: true,
+          cancelable: true
+        }));
+      }
+
+      // VICA normally starts as a launcher. Re-dispatching its public event
+      // during startup keeps the embedded experience permanently expanded.
+      function forceVICAFullPage() {
+        var now = Date.now();
+        if (now - lastMaximizeAt < 200) {
+          return;
+        }
+
+        lastMaximizeAt = now;
+        dispatchMaximize(document.body);
+        dispatchMaximize(host);
+      }
+
+      function getCanvas() {
+        if (!host) {
+          return null;
+        }
+
+        return host.querySelector(
+          '[id*="CONVERSATION"], [id*="conversation"], [role="dialog"]'
+        );
+      }
+
+      function canvasIsHidden() {
+        var canvas = getCanvas();
+        return canvas && window.getComputedStyle(canvas).display === "none";
+      }
+
+      function chatIsReady() {
+        if (!host) {
+          return false;
+        }
+
+        return Boolean(
+          host.querySelector(
+            'textarea, input[type="text"], [contenteditable="true"], [role="log"]'
+          )
+        );
+      }
+
+      function markReady() {
+        if (ready || !chatIsReady()) {
+          return;
+        }
+
+        ready = true;
+        document.documentElement.classList.add("vica-ready");
+        loader.setAttribute("aria-live", "off");
+
+        window.setTimeout(function () {
+          loader.hidden = true;
+        }, 260);
+      }
+
+      function watchVICA() {
+        if (!host || observer) {
+          return;
+        }
+
+        var mutationTimer;
+        observer = new MutationObserver(function () {
+          window.clearTimeout(mutationTimer);
+          mutationTimer = window.setTimeout(function () {
+            markReady();
+
+            if (!ready || canvasIsHidden()) {
+              forceVICAFullPage();
+            }
+          }, 80);
+        });
+
+        observer.observe(host, {
+          attributes: true,
+          childList: true,
+          subtree: true,
+          attributeFilter: ["class", "hidden", "style"]
+        });
+      }
+
+      function blockMinimize(event) {
+        if (event && event.cancelable) {
+          event.preventDefault();
+        }
+
+        window.setTimeout(forceVICAFullPage, 0);
+      }
+
+      function scheduleStartupMaximizes() {
+        [0, 250, 750, 1500, 3000, 6000].forEach(function (delay) {
+          window.setTimeout(function () {
+            forceVICAFullPage();
+            markReady();
+          }, delay);
+        });
+      }
+
+      function initialiseVICAFrame() {
+        host = document.getElementById("webchat");
+        loader = document.getElementById("chat-loader");
+        loaderSpinner = document.getElementById("chat-loader-spinner");
+        loaderText = document.getElementById("chat-loader-text");
+
+        watchVICA();
+        scheduleStartupMaximizes();
+
+        ["VAMinimize", "VAWillMinimize"].forEach(function (eventName) {
+          document.addEventListener(eventName, blockMinimize, true);
+          window.addEventListener(eventName, blockMinimize, true);
+        });
+
+        window.addEventListener("load", forceVICAFullPage);
+        window.addEventListener("resize", forceVICAFullPage);
+
+        window.setTimeout(function () {
+          if (!ready && loaderText) {
+            loaderText.textContent =
+              "The chat is taking longer than expected to connect.";
+          }
+        }, 12000);
+      }
+
+      window.vicaScriptLoaded = function () {
+        scheduleStartupMaximizes();
+        markReady();
+      };
+
+      window.vicaScriptFailed = function () {
+        loader = loader || document.getElementById("chat-loader");
+        loaderSpinner = loaderSpinner || document.getElementById("chat-loader-spinner");
+        loaderText = loaderText || document.getElementById("chat-loader-text");
+        if (loader) {
+          loader.setAttribute("role", "alert");
+        }
+        if (loaderSpinner) {
+          loaderSpinner.hidden = true;
+        }
+        if (loaderText) {
+          loaderText.textContent =
+            "Chat could not connect. Check your network, then refresh the page.";
+        }
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initialiseVICAFrame, { once: true });
+      } else {
+        initialiseVICAFrame();
+      }
+    }());
+  </script>
+
+  <script
+    async
+    type="text/javascript"
+    src="https://webchat.vica.gov.sg/static/js/chat.js"
+    referrerpolicy="origin"
+    onload="window.vicaScriptLoaded()"
+    onerror="window.vicaScriptFailed()"
+  ></script>
+</body>
+</html>

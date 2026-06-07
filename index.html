@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="preconnect" href="https://vica-webchat.vica.gov.sg" crossorigin>
+  <link rel="preconnect" href="https://webchat.vica.gov.sg" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,600;0,14..32,700;1,14..32,300;1,14..32,400;1,14..32,600;1,14..32,700&display=swap"
     rel="stylesheet"
@@ -30,11 +30,10 @@
     href="https://cdn.jsdelivr.net/npm/@govtechsg/sgds-web-component@3.21.0/css/sgds.css"
   >
   <link
-    href="https://vica-webchat.vica.gov.sg/static/css/chat.css"
+    href="https://webchat.vica.gov.sg/static/css/chat.css"
     referrerpolicy="origin"
     rel="stylesheet"
   >
-
   <style>
     :root {
       /* DIS orange mapped to the complete SGDS product colour scale. */
@@ -383,6 +382,7 @@
         min-width: 3rem;
         min-height: 3rem;
       }
+
     }
 
     @media (max-height: 42rem) and (orientation: landscape) {
@@ -450,32 +450,6 @@
     <div
       id="webchat"
       app-id="ask-dis-hr"
-      app-name="Guardian Support Hub"
-      app-font-family="Inter"
-      app-base-font-size="16"
-      app-color="#B43B0F"
-      app-foreground-color-1="#FFFFFF"
-      app-background-color-2="#FFFFFF"
-      app-foreground-color-2="#1A1A1A"
-      app-canvas-background-color="#F7F7F7"
-      app-button-border-color="#B43B0F"
-      app-quick-reply-button-background-color="#FFFFFF"
-      app-auto-complete-background-color="#FFFFFF"
-      app-auto-complete-foreground-color="#1A1A1A"
-      app-auto-complete-hover-color="#FFF1EC"
-      app-auto-complete-divider-color="#D6D6D6"
-      app-recommendations-background-color="#FFFFFF"
-      app-recommendations-foreground-color="#1A1A1A"
-      app-recommendations-hover-color="#FFF1EC"
-      app-auto-launch="true"
-      app-force-fullscreen="true"
-      app-position-fixed="false"
-      app-remove-minimize-button="true"
-      app-remove-rounded-corner="true"
-      app-height="100%"
-      app-width="100%"
-      app-z-index="1"
-      app-footer-border-radius="0px"
     ></div>
 
     <div id="chat-loader" class="chat-loader" role="status" aria-live="polite">
@@ -674,7 +648,7 @@
   <script
     async
     type="text/javascript"
-    src="https://vica-webchat.vica.gov.sg/static/js/chat.js"
+    src="https://webchat.vica.gov.sg/static/js/chat.js"
     referrerpolicy="origin"
     onload="window.vicaScriptLoaded()"
     onerror="window.vicaScriptFailed()"

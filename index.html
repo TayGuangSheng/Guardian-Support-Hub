@@ -506,6 +506,7 @@
       var loaderText;
       var observer;
       var ready = false;
+      var failed = false;
       var lastMaximizeAt = 0;
 
       function dispatchMaximize(target) {
@@ -633,7 +634,7 @@
         window.addEventListener("resize", forceVICAFullPage);
 
         window.setTimeout(function () {
-          if (!ready && loaderText) {
+          if (!ready && !failed && loaderText) {
             loaderText.textContent =
               "The chat is taking longer than expected to connect.";
           }
@@ -646,6 +647,7 @@
       };
 
       window.vicaScriptFailed = function () {
+        failed = true;
         loader = loader || document.getElementById("chat-loader");
         loaderSpinner = loaderSpinner || document.getElementById("chat-loader-spinner");
         loaderText = loaderText || document.getElementById("chat-loader-text");
@@ -657,7 +659,7 @@
         }
         if (loaderText) {
           loaderText.textContent =
-            "Chat could not connect. Check your network, then refresh the page.";
+            "ViCA could not load. Confirm that https://tayguangsheng.github.io is allowlisted in the ViCA Admin Console, then refresh the page.";
         }
       };
 

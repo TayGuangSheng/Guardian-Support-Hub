@@ -356,7 +356,8 @@
     }
 
     .support-panel__profile {
-      display: flex;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
       gap: 0.75rem;
       min-height: 4.25rem;
@@ -384,20 +385,24 @@
 
     .support-panel__profile-text {
       min-width: 0;
-      min-height: 2.75rem;
-      display: flex;
+      height: 2.75rem;
+      display: grid;
       align-items: center;
     }
 
     .support-panel__profile-name {
-      margin: 0;
+      height: 100%;
+      margin: 0 !important;
+      margin-block: 0 !important;
+      display: flex;
+      align-items: center;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       color: var(--text-default);
       font-size: 0.9375rem;
       font-weight: 700;
-      line-height: 1.2;
+      line-height: 1;
     }
 
     .chat-surface {

@@ -250,20 +250,6 @@
       white-space: nowrap;
     }
 
-    .theme-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.625rem;
-      color: var(--text-default);
-      font-size: 0.875rem;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    .theme-toggle__label {
-      color: var(--text-subtle);
-    }
-
     .chat-main {
       position: relative;
       flex: 1 1 auto;
@@ -719,17 +705,16 @@
         <span class="brand-title">Guardian Support Hub</span>
       </span>
 
-      <div class="theme-toggle" slot="end">
-        <span id="theme-toggle-label" class="theme-toggle__label">
-          Dark theme
-        </span>
-        <sgds-switch
-          id="theme-toggle"
-          size="sm"
-          icon
-          aria-label="Toggle dark theme"
-        ></sgds-switch>
-      </div>
+      <sgds-icon-button
+        id="theme-toggle"
+        slot="end"
+        name="moon"
+        size="lg"
+        tone="neutral"
+        variant="ghost"
+        ariaLabel="Switch to dark theme"
+        title="Switch to dark theme"
+      ></sgds-icon-button>
     </sgds-mainnav>
   </header>
 
@@ -842,7 +827,6 @@
       var failed = false;
       var lastMaximizeAt = 0;
       var themeToggle;
-      var themeToggleLabel;
       var themeColorMeta;
       var themeStorageKey = "guardian-support-hub-theme";
 
@@ -862,16 +846,12 @@
         }
 
         if (themeToggle) {
-          themeToggle.checked = isDark;
-          if (isDark) {
-            themeToggle.setAttribute("checked", "");
-          } else {
-            themeToggle.removeAttribute("checked");
-          }
-        }
+          var toggleLabel = isDark ?
+            "Switch to light theme" : "Switch to dark theme";
 
-        if (themeToggleLabel) {
-          themeToggleLabel.textContent = isDark ? "Light theme" : "Dark theme";
+          themeToggle.setAttribute("name", isDark ? "sun" : "moon");
+          themeToggle.ariaLabel = toggleLabel;
+          themeToggle.setAttribute("title", toggleLabel);
         }
 
         if (host) {
@@ -890,7 +870,6 @@
 
       function initialiseThemeToggle() {
         themeToggle = document.getElementById("theme-toggle");
-        themeToggleLabel = document.getElementById("theme-toggle-label");
         themeColorMeta = document.getElementById("theme-color-meta");
 
         applyTheme(currentTheme(), false);
@@ -899,11 +878,8 @@
           return;
         }
 
-        themeToggle.addEventListener("sgds-change", function (event) {
-          var checked = event.detail && typeof event.detail.checked === "boolean" ?
-            event.detail.checked : Boolean(themeToggle.checked);
-
-          applyTheme(checked ? "dark" : "light", true);
+        themeToggle.addEventListener("click", function () {
+          applyTheme(currentTheme() === "dark" ? "light" : "dark", true);
         });
       }
 

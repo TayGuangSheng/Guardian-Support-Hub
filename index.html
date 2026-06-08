@@ -187,6 +187,146 @@
         var(--surface-subtle);
     }
 
+    .chat-workspace {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    .support-panel {
+      width: clamp(17rem, 22vw, 20rem);
+      flex: 0 0 auto;
+      overflow-y: auto;
+      border-right: 0.0625rem solid #e0e0e0;
+      background: var(--surface-default);
+      padding: 1.25rem;
+    }
+
+    .support-panel__eyebrow {
+      margin: 0 0 0.25rem;
+      color: var(--dis-orange-dark);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .support-panel h2,
+    .support-panel h3 {
+      margin: 0;
+      color: var(--text-default);
+      line-height: 1.3;
+    }
+
+    .support-panel h2 {
+      font-size: 1.125rem;
+    }
+
+    .support-panel h3 {
+      font-size: 0.9375rem;
+    }
+
+    .support-panel p {
+      margin: 0.5rem 0 0;
+      color: var(--text-subtle);
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .support-panel__section {
+      padding-top: 1rem;
+      margin-top: 1rem;
+      border-top: 0.0625rem solid #e8e8e8;
+    }
+
+    .support-panel__prompt-list,
+    .support-panel__scope-list {
+      display: grid;
+      gap: 0.5rem;
+      margin: 0.75rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .support-panel__prompt {
+      width: 100%;
+      min-height: 2.75rem;
+      padding: 0.625rem 0.75rem;
+      border: 0.0625rem solid #d6d6d6;
+      border-radius: 0.5rem;
+      background: var(--surface-default);
+      color: var(--text-default);
+      font: inherit;
+      font-size: 0.875rem;
+      line-height: 1.35;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .support-panel__prompt:hover {
+      border-color: var(--dis-orange-dark);
+      background: var(--sgds-product-primary-100);
+    }
+
+    .support-panel__prompt:focus-visible {
+      border-color: var(--dis-orange-dark);
+      outline: 0.25rem solid var(--focus-ring);
+      outline-offset: 0.125rem;
+    }
+
+    .support-panel__scope-list {
+      gap: 0.375rem;
+      color: var(--text-subtle);
+      font-size: 0.875rem;
+      line-height: 1.45;
+    }
+
+    .support-panel__scope-list li {
+      position: relative;
+      padding-left: 1rem;
+    }
+
+    .support-panel__scope-list li::before {
+      position: absolute;
+      top: 0.55em;
+      left: 0;
+      width: 0.375rem;
+      height: 0.375rem;
+      border-radius: 50%;
+      background: var(--dis-orange);
+      content: "";
+    }
+
+    .support-panel__notice {
+      padding: 0.875rem;
+      border: 0.0625rem solid var(--sgds-product-primary-300);
+      border-radius: 0.5rem;
+      background: var(--sgds-product-primary-100);
+    }
+
+    .support-panel__notice p {
+      margin-top: 0.375rem;
+      color: var(--sgds-product-primary-900);
+    }
+
+    .support-panel__status {
+      min-height: 1.25rem;
+      margin-top: 0.625rem;
+      color: var(--dis-orange-dark);
+      font-size: 0.8125rem;
+      font-weight: 600;
+    }
+
+    .chat-surface {
+      position: relative;
+      flex: 1 1 auto;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+
     /*
      * VICA is designed as a floating widget. These rules pin its conversation
      * canvas to the remaining viewport area beneath the SGDS application shell.
@@ -385,9 +525,37 @@
 
     }
 
+    @media (max-width: 64rem) {
+      .chat-workspace {
+        flex-direction: column;
+      }
+
+      .support-panel {
+        width: 100%;
+        max-height: 15rem;
+        border-right: 0;
+        border-bottom: 0.0625rem solid #e0e0e0;
+        padding: 1rem;
+      }
+
+      .support-panel__prompt-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
     @media (max-height: 42rem) and (orientation: landscape) {
       .chat-main {
         min-height: 10rem;
+      }
+
+      .support-panel {
+        max-height: 10rem;
+      }
+    }
+
+    @media (max-width: 36rem) {
+      .support-panel__prompt-list {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -447,40 +615,104 @@
   <main class="chat-main" aria-labelledby="page-title">
     <h1 id="page-title" class="visually-hidden">Guardian Support Hub</h1>
 
-    <div
-      id="webchat"
-      app-id="ask-dis-hr"
-      app-layout="fullscreen"
-      app-widget-position="relative"
-      app-environment-override="production"
-      app-name="Guardian Support Hub"
-      app-font-family="Inter"
-      app-color="#B43B0F"
-      app-fullscreen-height-offset="112"
-      app-message-scroll-offset="112"
-      app-position-fixed="false"
-      app-remove-minimize-button="true"
-      app-remove-rounded-corner="true"
-      app-height="100%"
-      app-width="100%"
-    ></div>
+    <div class="chat-workspace">
+      <aside class="support-panel" aria-labelledby="support-panel-title">
+        <p class="support-panel__eyebrow">HR support</p>
+        <h2 id="support-panel-title">Start with a common question</h2>
+        <p>Choose a prompt, then paste it into the chat.</p>
 
-    <div id="chat-loader" class="chat-loader" role="status" aria-live="polite">
-      <div class="chat-loader__content">
-        <sgds-spinner
-          id="chat-loader-spinner"
-          size="lg"
-          tone="brand"
-        ></sgds-spinner>
-        <p id="chat-loader-text">Connecting to Guardian Support Hub...</p>
-      </div>
+        <div class="support-panel__section">
+          <h3>Suggested questions</h3>
+          <ul class="support-panel__prompt-list">
+            <li>
+              <button
+                class="support-panel__prompt"
+                type="button"
+                data-copy-prompt="How do I apply for leave?"
+              >How do I apply for leave?</button>
+            </li>
+            <li>
+              <button
+                class="support-panel__prompt"
+                type="button"
+                data-copy-prompt="Where can I find HR policies?"
+              >Where can I find HR policies?</button>
+            </li>
+            <li>
+              <button
+                class="support-panel__prompt"
+                type="button"
+                data-copy-prompt="Who can I contact about my benefits?"
+              >Who can I contact about my benefits?</button>
+            </li>
+            <li>
+              <button
+                class="support-panel__prompt"
+                type="button"
+                data-copy-prompt="How do I update my personal details?"
+              >How do I update my personal details?</button>
+            </li>
+          </ul>
+          <p
+            id="prompt-copy-status"
+            class="support-panel__status"
+            aria-live="polite"
+          ></p>
+        </div>
+
+        <div class="support-panel__section">
+          <h3>This hub can help with</h3>
+          <ul class="support-panel__scope-list">
+            <li>Leave and claims</li>
+            <li>HR policies</li>
+            <li>Benefits and welfare</li>
+            <li>Workplace support</li>
+          </ul>
+        </div>
+
+        <div class="support-panel__section support-panel__notice">
+          <h3>Before you ask</h3>
+          <p>Do not share sensitive or classified information.</p>
+        </div>
+      </aside>
+
+      <section class="chat-surface" aria-label="Guardian Support Hub chat">
+        <div
+          id="webchat"
+          app-id="ask-dis-hr"
+          app-layout="fullscreen"
+          app-widget-position="relative"
+          app-environment-override="production"
+          app-name="Guardian Support Hub"
+          app-font-family="Inter"
+          app-color="#B43B0F"
+          app-fullscreen-height-offset="112"
+          app-message-scroll-offset="112"
+          app-position-fixed="false"
+          app-remove-minimize-button="true"
+          app-remove-rounded-corner="true"
+          app-height="100%"
+          app-width="100%"
+        ></div>
+
+        <div id="chat-loader" class="chat-loader" role="status" aria-live="polite">
+          <div class="chat-loader__content">
+            <sgds-spinner
+              id="chat-loader-spinner"
+              size="lg"
+              tone="brand"
+            ></sgds-spinner>
+            <p id="chat-loader-text">Connecting to Guardian Support Hub...</p>
+          </div>
+        </div>
+
+        <noscript>
+          <div class="noscript-message">
+            JavaScript is required to connect to Guardian Support Hub.
+          </div>
+        </noscript>
+      </section>
     </div>
-
-    <noscript>
-      <div class="noscript-message">
-        JavaScript is required to connect to Guardian Support Hub.
-      </div>
-    </noscript>
   </main>
 
   <script>
@@ -522,13 +754,49 @@
 
       function syncVICAFullscreenOffset() {
         var header = document.querySelector(".app-header");
-        if (!host || !header) {
+        if (!host) {
           return;
         }
 
-        var headerHeight = Math.ceil(header.getBoundingClientRect().height);
-        host.setAttribute("app-fullscreen-height-offset", String(headerHeight));
-        host.setAttribute("app-message-scroll-offset", String(headerHeight));
+        var topOffset = Math.ceil(host.getBoundingClientRect().top);
+        if (!topOffset && header) {
+          topOffset = Math.ceil(header.getBoundingClientRect().height);
+        }
+
+        topOffset = Math.max(topOffset, 0);
+        host.setAttribute("app-fullscreen-height-offset", String(topOffset));
+        host.setAttribute("app-message-scroll-offset", String(topOffset));
+      }
+
+      function initialisePromptCopy() {
+        var status = document.getElementById("prompt-copy-status");
+        var buttons = document.querySelectorAll("[data-copy-prompt]");
+
+        buttons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            var prompt = button.getAttribute("data-copy-prompt") ||
+              button.textContent.trim();
+
+            function markCopied() {
+              if (status) {
+                status.textContent = "Copied. Paste it into the chat.";
+              }
+            }
+
+            function showPrompt() {
+              if (status) {
+                status.textContent = prompt;
+              }
+            }
+
+            if (navigator.clipboard && window.isSecureContext) {
+              navigator.clipboard.writeText(prompt).then(markCopied, showPrompt);
+              return;
+            }
+
+            showPrompt();
+          });
+        });
       }
 
       function getCanvas() {
@@ -633,6 +901,7 @@
         loaderSpinner = document.getElementById("chat-loader-spinner");
         loaderText = document.getElementById("chat-loader-text");
 
+        initialisePromptCopy();
         syncVICAFullscreenOffset();
         watchVICA();
         scheduleStartupMaximizes();

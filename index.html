@@ -3,13 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#ffffff">
+  <meta id="theme-color-meta" name="theme-color" content="#ffffff">
   <meta
     name="description"
     content="Guardian Support Hub for Digital and Intelligence Service HR enquiries and support."
   >
   <title>Guardian Support Hub | Digital and Intelligence Service</title>
   <link rel="icon" type="image/png" sizes="64x64" href="assets/dis-favicon.png">
+  <script>
+    (function () {
+      "use strict";
+
+      var storageKey = "guardian-support-hub-theme";
+      var theme = "light";
+
+      try {
+        theme = window.localStorage.getItem(storageKey) || "light";
+      } catch (error) {
+        theme = "light";
+      }
+
+      theme = theme === "dark" ? "dark" : "light";
+      document.documentElement.dataset.theme = theme;
+      if (theme === "dark") {
+        document.documentElement.classList.add("sgds-night-theme");
+      }
+    }());
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +44,10 @@
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/@govtechsg/sgds-web-component@3.21.0/themes/day.css"
+  >
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@govtechsg/sgds-web-component@3.21.0/themes/night.css"
   >
   <link
     rel="stylesheet"
@@ -50,12 +74,48 @@
       --dis-orange: #f15a24;
       --dis-orange-dark: #b43b0f;
       --dis-black: #111111;
+      --accent-text: #b43b0f;
       --surface-subtle: #f7f7f7;
       --surface-default: #ffffff;
+      --surface-muted: #fafafa;
       --border-default: #b8b8b8;
+      --border-subtle: #e0e0e0;
+      --border-light: #e8e8e8;
       --text-default: #1a1a1a;
       --text-subtle: #525252;
       --focus-ring: #60aaf4;
+      --chat-gradient: rgb(241 90 36 / 4%);
+      --notice-surface: var(--sgds-product-primary-100);
+      --notice-border: var(--sgds-product-primary-300);
+      --notice-text: var(--sgds-product-primary-900);
+      --prompt-hover-surface: var(--sgds-product-primary-100);
+      --avatar-surface-end: #ffffff;
+      --placeholder-text: #686868;
+      --link-text: #0269d0;
+      --selection-text: var(--dis-black);
+    }
+
+    :root.sgds-night-theme {
+      color-scheme: dark;
+      --accent-text: #ffb69d;
+      --surface-subtle: #0f1117;
+      --surface-default: #161a22;
+      --surface-muted: #20242d;
+      --border-default: #6f7684;
+      --border-subtle: #343b48;
+      --border-light: #2b313d;
+      --text-default: #f5f7fb;
+      --text-subtle: #c2c8d3;
+      --focus-ring: #8ec5ff;
+      --chat-gradient: rgb(241 90 36 / 12%);
+      --notice-surface: #2a1812;
+      --notice-border: #8f2d08;
+      --notice-text: #ffd8ca;
+      --prompt-hover-surface: #241b18;
+      --avatar-surface-end: #161a22;
+      --placeholder-text: #a9b0bd;
+      --link-text: #8ec5ff;
+      --selection-text: #111111;
     }
 
     *,
@@ -175,6 +235,20 @@
       white-space: nowrap;
     }
 
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.625rem;
+      color: var(--text-default);
+      font-size: 0.875rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .theme-toggle__label {
+      color: var(--text-subtle);
+    }
+
     .chat-main {
       position: relative;
       flex: 1 1 auto;
@@ -183,7 +257,7 @@
       overflow: hidden;
       isolation: isolate;
       background:
-        linear-gradient(180deg, rgb(241 90 36 / 4%), transparent 9rem),
+        linear-gradient(180deg, var(--chat-gradient), transparent 9rem),
         var(--surface-subtle);
     }
 
@@ -201,7 +275,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      border-right: 0.0625rem solid #e0e0e0;
+      border-right: 0.0625rem solid var(--border-subtle);
       background: var(--surface-default);
       padding: 1.25rem;
     }
@@ -216,7 +290,7 @@
 
     .support-panel__eyebrow {
       margin: 0 0 0.25rem;
-      color: var(--dis-orange-dark);
+      color: var(--accent-text);
       font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.08em;
@@ -248,7 +322,7 @@
     .support-panel__section {
       padding-top: 1rem;
       margin-top: 1rem;
-      border-top: 0.0625rem solid #e8e8e8;
+      border-top: 0.0625rem solid var(--border-light);
     }
 
     .support-panel__prompt-list,
@@ -264,7 +338,7 @@
       width: 100%;
       min-height: 2.75rem;
       padding: 0.625rem 0.75rem;
-      border: 0.0625rem solid #d6d6d6;
+      border: 0.0625rem solid var(--border-subtle);
       border-radius: 0.5rem;
       background: var(--surface-default);
       color: var(--text-default);
@@ -277,7 +351,7 @@
 
     .support-panel__prompt:hover {
       border-color: var(--dis-orange-dark);
-      background: var(--sgds-product-primary-100);
+      background: var(--prompt-hover-surface);
     }
 
     .support-panel__prompt:focus-visible {
@@ -311,20 +385,20 @@
 
     .support-panel__notice {
       padding: 0.875rem;
-      border: 0.0625rem solid var(--sgds-product-primary-300);
+      border: 0.0625rem solid var(--notice-border);
       border-radius: 0.5rem;
-      background: var(--sgds-product-primary-100);
+      background: var(--notice-surface);
     }
 
     .support-panel__notice p {
       margin-top: 0.375rem;
-      color: var(--sgds-product-primary-900);
+      color: var(--notice-text);
     }
 
     .support-panel__status {
       min-height: 1.25rem;
       margin-top: 0.625rem;
-      color: var(--dis-orange-dark);
+      color: var(--accent-text);
       font-size: 0.8125rem;
       font-weight: 600;
     }
@@ -333,7 +407,7 @@
       flex: 0 0 auto;
       margin-top: 1rem;
       padding-top: 1rem;
-      border-top: 0.0625rem solid #e8e8e8;
+      border-top: 0.0625rem solid var(--border-light);
     }
 
     .support-panel__profile {
@@ -342,9 +416,9 @@
       gap: 0.75rem;
       min-height: 4.25rem;
       padding: 0.75rem 0.875rem;
-      border: 0.0625rem solid #e0e0e0;
+      border: 0.0625rem solid var(--border-subtle);
       border-radius: 0.75rem;
-      background: #fafafa;
+      background: var(--surface-muted);
     }
 
     .support-panel__avatar {
@@ -356,8 +430,8 @@
       border: 0.125rem solid var(--sgds-product-primary-200);
       border-radius: 50%;
       background:
-        linear-gradient(135deg, var(--sgds-product-primary-100), #ffffff);
-      color: var(--dis-orange-dark);
+        linear-gradient(135deg, var(--sgds-product-primary-100), var(--avatar-surface-end));
+      color: var(--accent-text);
       font-size: 0.9375rem;
       font-weight: 700;
       letter-spacing: 0.02em;
@@ -455,7 +529,7 @@
 
     #webchat textarea::placeholder,
     #webchat input::placeholder {
-      color: #686868 !important;
+      color: var(--placeholder-text) !important;
       opacity: 1;
     }
 
@@ -493,14 +567,14 @@
     }
 
     #webchat a {
-      color: #0269d0 !important;
+      color: var(--link-text) !important;
       text-decoration: underline;
       text-underline-offset: 0.1875rem;
     }
 
     #webchat ::selection {
       background: var(--sgds-product-primary-200);
-      color: var(--dis-black);
+      color: var(--selection-text);
     }
 
     .chat-loader {
@@ -596,7 +670,7 @@
         width: 100%;
         max-height: 15rem;
         border-right: 0;
-        border-bottom: 0.0625rem solid #e0e0e0;
+        border-bottom: 0.0625rem solid var(--border-subtle);
         padding: 1rem;
       }
 
@@ -671,6 +745,17 @@
         <span class="brand-title">Guardian Support Hub</span>
       </span>
 
+      <div class="theme-toggle" slot="end">
+        <span id="theme-toggle-label" class="theme-toggle__label">
+          Dark theme
+        </span>
+        <sgds-switch
+          id="theme-toggle"
+          size="sm"
+          icon
+          aria-label="Toggle dark theme"
+        ></sgds-switch>
+      </div>
     </sgds-mainnav>
   </header>
 
@@ -803,6 +888,71 @@
       var ready = false;
       var failed = false;
       var lastMaximizeAt = 0;
+      var themeToggle;
+      var themeToggleLabel;
+      var themeColorMeta;
+      var themeStorageKey = "guardian-support-hub-theme";
+
+      function currentTheme() {
+        return document.documentElement.dataset.theme === "dark" ?
+          "dark" : "light";
+      }
+
+      function applyTheme(theme, shouldPersist) {
+        var isDark = theme === "dark";
+
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.classList.toggle("sgds-night-theme", isDark);
+
+        if (themeColorMeta) {
+          themeColorMeta.setAttribute("content", isDark ? "#0f1117" : "#ffffff");
+        }
+
+        if (themeToggle) {
+          themeToggle.checked = isDark;
+          if (isDark) {
+            themeToggle.setAttribute("checked", "");
+          } else {
+            themeToggle.removeAttribute("checked");
+          }
+        }
+
+        if (themeToggleLabel) {
+          themeToggleLabel.textContent = isDark ? "Light theme" : "Dark theme";
+        }
+
+        if (host) {
+          host.setAttribute("data-theme", theme);
+          patchVICAShadowLayout();
+        }
+
+        if (shouldPersist) {
+          try {
+            window.localStorage.setItem(themeStorageKey, theme);
+          } catch (error) {
+            return;
+          }
+        }
+      }
+
+      function initialiseThemeToggle() {
+        themeToggle = document.getElementById("theme-toggle");
+        themeToggleLabel = document.getElementById("theme-toggle-label");
+        themeColorMeta = document.getElementById("theme-color-meta");
+
+        applyTheme(currentTheme(), false);
+
+        if (!themeToggle) {
+          return;
+        }
+
+        themeToggle.addEventListener("sgds-change", function (event) {
+          var checked = event.detail && typeof event.detail.checked === "boolean" ?
+            event.detail.checked : Boolean(themeToggle.checked);
+
+          applyTheme(checked ? "dark" : "light", true);
+        });
+      }
 
       function dispatchMaximize(target) {
         if (!target || typeof target.dispatchEvent !== "function") {
@@ -842,6 +992,7 @@
         topOffset = Math.max(topOffset, 0);
         host.setAttribute("app-fullscreen-height-offset", String(topOffset));
         host.setAttribute("app-message-scroll-offset", String(topOffset));
+        host.style.setProperty("--guardian-vica-top-offset", topOffset + "px");
       }
 
       function initialisePromptCopy() {
@@ -884,6 +1035,65 @@
         var style = document.createElement("style");
         style.id = "guardian-vica-layout-patch";
         style.textContent = [
+          ":host([data-theme=\"dark\"]),",
+          ":host([data-theme=\"dark\"]) #vica-shadow-container {",
+          "  --vica-background: #0f1117;",
+          "  --vica-foreground: #f5f7fb;",
+          "  --vica-card: #161a22;",
+          "  --vica-card-foreground: #f5f7fb;",
+          "  --vica-popover: #161a22;",
+          "  --vica-popover-foreground: #f5f7fb;",
+          "  --vica-muted: #20242d;",
+          "  --vica-muted-foreground: #c2c8d3;",
+          "  --vica-border: #343b48;",
+          "  --vica-input: #343b48;",
+          "  --vica-ring: #8ec5ff;",
+          "  --vica-neutralDefault: #f5f7fb;",
+          "  --vica-neutral1: #f5f7fb;",
+          "  --vica-neutral2: #d9dee8;",
+          "  --vica-neutral3: #c2c8d3;",
+          "  --vica-neutral4: #a9b0bd;",
+          "  --vica-neutral5: #343b48;",
+          "  --vica-neutral7: #20242d;",
+          "  --vica-neutral8: #161a22;",
+          "  --vica-accent: #241b18;",
+          "  --vica-accentLight: #2a1812;",
+          "  --vica-accentLightest: #0f1117;",
+          "  --vica-color-primary-accent-light: #2a1812;",
+          "  --vica-color-primary-accent-lightest: #0f1117;",
+          "}",
+          ":host([data-theme=\"dark\"]) #vica-shadow-container {",
+          "  color: #f5f7fb;",
+          "}",
+          ":host([data-theme=\"dark\"]) .bg-white,",
+          ":host([data-theme=\"dark\"]) .bg-accentLightest {",
+          "  background-color: #161a22 !important;",
+          "}",
+          ":host([data-theme=\"dark\"]) .border-gray-300 {",
+          "  border-color: #343b48 !important;",
+          "}",
+          ":host([data-theme=\"dark\"]) .text-n1,",
+          ":host([data-theme=\"dark\"]) .text-neutralDefault,",
+          ":host([data-theme=\"dark\"]) .text-neutral1 {",
+          "  color: #f5f7fb !important;",
+          "}",
+          ":host([data-theme=\"dark\"]) .text-n3,",
+          ":host([data-theme=\"dark\"]) .text-neutral3,",
+          ":host([data-theme=\"dark\"]) .text-gray-700 {",
+          "  color: #c2c8d3 !important;",
+          "}",
+          ":host([data-theme=\"dark\"]) textarea,",
+          ":host([data-theme=\"dark\"]) input {",
+          "  background-color: #20242d !important;",
+          "  color: #f5f7fb !important;",
+          "}",
+          ":host([data-theme=\"dark\"]) textarea::placeholder,",
+          ":host([data-theme=\"dark\"]) input::placeholder {",
+          "  color: #a9b0bd !important;",
+          "}",
+          "#vica-shadow-container [class*=\"min-h-[calc(100dvh-448px)]\"] {",
+          "  min-height: max(0px, calc(100dvh - var(--guardian-vica-top-offset, 0px) - 448px)) !important;",
+          "}",
           "@media (max-width: 48rem) {",
           "  .gsib-min-w-424 { min-width: 0 !important; }",
           "  #vica-shadow-container {",
@@ -1010,6 +1220,7 @@
         loaderSpinner = document.getElementById("chat-loader-spinner");
         loaderText = document.getElementById("chat-loader-text");
 
+        initialiseThemeToggle();
         initialisePromptCopy();
         patchVICAShadowLayout();
         syncVICAFullscreenOffset();

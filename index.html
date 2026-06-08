@@ -799,6 +799,38 @@
         });
       }
 
+      function patchVICAShadowLayout() {
+        if (!host || !host.shadowRoot ||
+            host.shadowRoot.getElementById("guardian-vica-layout-patch")) {
+          return;
+        }
+
+        var style = document.createElement("style");
+        style.id = "guardian-vica-layout-patch";
+        style.textContent = [
+          "@media (max-width: 48rem) {",
+          "  .gsib-min-w-424 { min-width: 0 !important; }",
+          "  #vica-shadow-container {",
+          "    width: 100% !important;",
+          "    max-width: 100% !important;",
+          "    overflow-x: hidden;",
+          "  }",
+          "  #vica-shadow-container * {",
+          "    box-sizing: border-box;",
+          "    max-width: 100%;",
+          "  }",
+          "  #vica-shadow-container h1,",
+          "  #vica-shadow-container h2,",
+          "  #vica-shadow-container p {",
+          "    white-space: normal !important;",
+          "    overflow-wrap: break-word;",
+          "  }",
+          "}"
+        ].join("\n");
+
+        host.shadowRoot.appendChild(style);
+      }
+
       function getCanvas() {
         if (!host) {
           return null;
@@ -889,6 +921,7 @@
       function scheduleStartupMaximizes() {
         [0, 250, 750, 1500, 3000, 6000].forEach(function (delay) {
           window.setTimeout(function () {
+            patchVICAShadowLayout();
             forceVICAFullPage();
             markReady();
           }, delay);
@@ -902,6 +935,7 @@
         loaderText = document.getElementById("chat-loader-text");
 
         initialisePromptCopy();
+        patchVICAShadowLayout();
         syncVICAFullscreenOffset();
         watchVICA();
         scheduleStartupMaximizes();
@@ -927,6 +961,7 @@
 
       window.vicaScriptLoaded = function () {
         scheduleStartupMaximizes();
+        patchVICAShadowLayout();
         window.setTimeout(hideLoader, 500);
       };
 

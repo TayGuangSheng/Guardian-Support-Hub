@@ -226,6 +226,21 @@
       height: auto;
     }
 
+    .brand-logo--dark {
+      display: none;
+      height: clamp(3.25rem, 4.588vw, 4.0625rem);
+      object-fit: cover;
+      object-position: center;
+    }
+
+    :root.sgds-night-theme .brand-logo--light {
+      display: none;
+    }
+
+    :root.sgds-night-theme .brand-logo--dark {
+      display: block;
+    }
+
     .brand-title {
       color: var(--text-default);
       font-size: clamp(1.5rem, 2vw, 1.875rem);
@@ -635,6 +650,10 @@
         width: 7rem;
       }
 
+      .brand-logo--dark {
+        height: 2.676rem;
+      }
+
       .brand-title {
         font-size: 1.375rem;
       }
@@ -648,6 +667,10 @@
 
       .brand-logo {
         width: 5.75rem;
+      }
+
+      .brand-logo--dark {
+        height: 2.199rem;
       }
 
       .brand-title {
@@ -736,11 +759,18 @@
     <sgds-mainnav fluid expand="always" brandHref="#webchat">
       <span class="brand-lockup" slot="brand">
         <img
-          class="brand-logo"
+          class="brand-logo brand-logo--light"
           width="340"
           height="130"
           alt="Digital and Intelligence Service"
           src="assets/dis-logo.png"
+        >
+        <img
+          class="brand-logo brand-logo--dark"
+          width="340"
+          height="130"
+          alt="Digital and Intelligence Service"
+          src="assets/dis-logo-dark.png"
         >
         <span class="brand-title">Guardian Support Hub</span>
       </span>

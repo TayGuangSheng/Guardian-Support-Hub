@@ -198,10 +198,20 @@
     .support-panel {
       width: clamp(17rem, 22vw, 20rem);
       flex: 0 0 auto;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
       border-right: 0.0625rem solid #e0e0e0;
       background: var(--surface-default);
       padding: 1.25rem;
+    }
+
+    .support-panel__content {
+      min-height: 0;
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding-right: 0.25rem;
+      margin-right: -0.25rem;
     }
 
     .support-panel__eyebrow {
@@ -317,6 +327,64 @@
       color: var(--dis-orange-dark);
       font-size: 0.8125rem;
       font-weight: 600;
+    }
+
+    .support-panel__profile-wrap {
+      flex: 0 0 auto;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 0.0625rem solid #e8e8e8;
+    }
+
+    .support-panel__profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem;
+      border: 0.0625rem solid #e0e0e0;
+      border-radius: 0.75rem;
+      background: #fafafa;
+    }
+
+    .support-panel__avatar {
+      width: 2.75rem;
+      height: 2.75rem;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border: 0.125rem solid var(--sgds-product-primary-200);
+      border-radius: 50%;
+      background:
+        linear-gradient(135deg, var(--sgds-product-primary-100), #ffffff);
+      color: var(--dis-orange-dark);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .support-panel__profile-text {
+      min-width: 0;
+    }
+
+    .support-panel__profile-label,
+    .support-panel__profile-name {
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .support-panel__profile-label {
+      color: var(--text-subtle);
+      font-size: 0.75rem;
+      line-height: 1.35;
+    }
+
+    .support-panel__profile-name {
+      color: var(--text-default);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      line-height: 1.35;
     }
 
     .chat-surface {
@@ -617,62 +685,77 @@
 
     <div class="chat-workspace">
       <aside class="support-panel" aria-labelledby="support-panel-title">
-        <p class="support-panel__eyebrow">HR support</p>
-        <h2 id="support-panel-title">Start with a common question</h2>
-        <p>Choose a prompt, then paste it into the chat.</p>
+        <div class="support-panel__content">
+          <p class="support-panel__eyebrow">HR support</p>
+          <h2 id="support-panel-title">Start with a common question</h2>
+          <p>Choose a prompt, then paste it into the chat.</p>
 
-        <div class="support-panel__section">
-          <h3>Suggested questions</h3>
-          <ul class="support-panel__prompt-list">
-            <li>
-              <button
-                class="support-panel__prompt"
-                type="button"
-                data-copy-prompt="How do I apply for leave?"
-              >How do I apply for leave?</button>
-            </li>
-            <li>
-              <button
-                class="support-panel__prompt"
-                type="button"
-                data-copy-prompt="Where can I find HR policies?"
-              >Where can I find HR policies?</button>
-            </li>
-            <li>
-              <button
-                class="support-panel__prompt"
-                type="button"
-                data-copy-prompt="Who can I contact about my benefits?"
-              >Who can I contact about my benefits?</button>
-            </li>
-            <li>
-              <button
-                class="support-panel__prompt"
-                type="button"
-                data-copy-prompt="How do I update my personal details?"
-              >How do I update my personal details?</button>
-            </li>
-          </ul>
-          <p
-            id="prompt-copy-status"
-            class="support-panel__status"
-            aria-live="polite"
-          ></p>
+          <div class="support-panel__section">
+            <h3>Suggested questions</h3>
+            <ul class="support-panel__prompt-list">
+              <li>
+                <button
+                  class="support-panel__prompt"
+                  type="button"
+                  data-copy-prompt="How do I apply for leave?"
+                >How do I apply for leave?</button>
+              </li>
+              <li>
+                <button
+                  class="support-panel__prompt"
+                  type="button"
+                  data-copy-prompt="Where can I find HR policies?"
+                >Where can I find HR policies?</button>
+              </li>
+              <li>
+                <button
+                  class="support-panel__prompt"
+                  type="button"
+                  data-copy-prompt="Who can I contact about my benefits?"
+                >Who can I contact about my benefits?</button>
+              </li>
+              <li>
+                <button
+                  class="support-panel__prompt"
+                  type="button"
+                  data-copy-prompt="How do I update my personal details?"
+                >How do I update my personal details?</button>
+              </li>
+            </ul>
+            <p
+              id="prompt-copy-status"
+              class="support-panel__status"
+              aria-live="polite"
+            ></p>
+          </div>
+
+          <div class="support-panel__section">
+            <h3>This hub can help with</h3>
+            <ul class="support-panel__scope-list">
+              <li>Leave and claims</li>
+              <li>HR policies</li>
+              <li>Benefits and welfare</li>
+              <li>Workplace support</li>
+            </ul>
+          </div>
+
+          <div class="support-panel__section support-panel__notice">
+            <h3>Before you ask</h3>
+            <p>Do not share sensitive or classified information.</p>
+          </div>
         </div>
 
-        <div class="support-panel__section">
-          <h3>This hub can help with</h3>
-          <ul class="support-panel__scope-list">
-            <li>Leave and claims</li>
-            <li>HR policies</li>
-            <li>Benefits and welfare</li>
-            <li>Workplace support</li>
-          </ul>
-        </div>
-
-        <div class="support-panel__section support-panel__notice">
-          <h3>Before you ask</h3>
-          <p>Do not share sensitive or classified information.</p>
+        <div
+          class="support-panel__profile-wrap"
+          aria-label="Signed-in profile"
+        >
+          <div class="support-panel__profile">
+            <div class="support-panel__avatar" aria-hidden="true">TG</div>
+            <div class="support-panel__profile-text">
+              <p class="support-panel__profile-label">Signed in with Singpass</p>
+              <p class="support-panel__profile-name">Tay Guang Sheng</p>
+            </div>
+          </div>
         </div>
       </aside>
 

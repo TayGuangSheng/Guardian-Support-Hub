@@ -456,8 +456,8 @@
       app-name="Guardian Support Hub"
       app-font-family="Inter"
       app-color="#B43B0F"
-      app-fullscreen-height-offset="0"
-      app-message-scroll-offset="0"
+      app-fullscreen-height-offset="112"
+      app-message-scroll-offset="112"
       app-position-fixed="false"
       app-remove-minimize-button="true"
       app-remove-rounded-corner="true"
@@ -518,6 +518,17 @@
         lastMaximizeAt = now;
         dispatchMaximize(document.body);
         dispatchMaximize(host);
+      }
+
+      function syncVICAFullscreenOffset() {
+        var header = document.querySelector(".app-header");
+        if (!host || !header) {
+          return;
+        }
+
+        var headerHeight = Math.ceil(header.getBoundingClientRect().height);
+        host.setAttribute("app-fullscreen-height-offset", String(headerHeight));
+        host.setAttribute("app-message-scroll-offset", String(headerHeight));
       }
 
       function getCanvas() {
@@ -622,6 +633,7 @@
         loaderSpinner = document.getElementById("chat-loader-spinner");
         loaderText = document.getElementById("chat-loader-text");
 
+        syncVICAFullscreenOffset();
         watchVICA();
         scheduleStartupMaximizes();
 
@@ -631,7 +643,10 @@
         });
 
         window.addEventListener("load", forceVICAFullPage);
-        window.addEventListener("resize", forceVICAFullPage);
+        window.addEventListener("resize", function () {
+          syncVICAFullscreenOffset();
+          forceVICAFullPage();
+        });
 
         window.setTimeout(function () {
           if (!ready && !failed && loaderText) {

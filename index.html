@@ -547,18 +547,31 @@
         );
       }
 
-      function markReady() {
-        if (ready || !chatIsReady()) {
+      function hideLoader() {
+        if (ready) {
           return;
         }
 
         ready = true;
         document.documentElement.classList.add("vica-ready");
-        loader.setAttribute("aria-live", "off");
+
+        if (loader) {
+          loader.setAttribute("aria-live", "off");
+        }
 
         window.setTimeout(function () {
-          loader.hidden = true;
+          if (loader) {
+            loader.hidden = true;
+          }
         }, 260);
+      }
+
+      function markReady() {
+        if (ready || !chatIsReady()) {
+          return;
+        }
+
+        hideLoader();
       }
 
       function watchVICA() {
@@ -630,7 +643,7 @@
 
       window.vicaScriptLoaded = function () {
         scheduleStartupMaximizes();
-        markReady();
+        window.setTimeout(hideLoader, 500);
       };
 
       window.vicaScriptFailed = function () {

@@ -437,21 +437,6 @@
       text-underline-offset: 0.1875rem;
     }
 
-    .login-prototype-note {
-      margin-top: 1.5rem;
-      padding: 0.875rem 1rem;
-      border-left: 0.25rem solid var(--sgds-product-primary-500);
-      background: var(--notice-surface);
-      color: var(--notice-text);
-      font-size: 0.8125rem;
-      line-height: 1.5;
-    }
-
-    .login-prototype-note strong {
-      display: block;
-      margin-bottom: 0.125rem;
-    }
-
     .singpass-login-status {
       min-height: 1.5rem;
       margin: 0.75rem 0 0;
@@ -1076,7 +1061,7 @@
           class="singpass-login-button"
           type="button"
           aria-label="Log in with Singpass"
-          aria-describedby="singpass-login-guidance prototype-login-note"
+          aria-describedby="singpass-login-guidance"
         >
           <span>Log in with</span>
           <img
@@ -1097,16 +1082,6 @@
             Get Singpass help
           </a>
         </p>
-
-        <div
-          id="prototype-login-note"
-          class="login-prototype-note"
-          role="note"
-        >
-          <strong>Prototype mode</strong>
-          Singpass authentication is not connected yet. This button opens a
-          frontend preview of the support hub for testing.
-        </div>
 
         <p
           id="singpass-login-status"

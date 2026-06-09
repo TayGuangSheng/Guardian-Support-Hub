@@ -30,6 +30,7 @@
 
       theme = theme === "dark" ? "dark" : "light";
       document.documentElement.dataset.theme = theme;
+      document.documentElement.classList.add("auth-login");
       if (theme === "dark") {
         document.documentElement.classList.add("sgds-night-theme");
       }
@@ -98,6 +99,8 @@
       --link-text: #0269d0;
       --selection-text: var(--dis-black);
       --app-viewport-height: 100dvh;
+      --singpass-red: #f4333d;
+      --singpass-border: #c8c9cc;
     }
 
     :root.sgds-night-theme {
@@ -148,6 +151,16 @@
       font-family: var(--sgds-font-family-brand);
       font-size: 1rem;
       line-height: 1.5;
+    }
+
+    :root.auth-login {
+      overflow-y: auto;
+    }
+
+    :root.auth-login body {
+      height: auto;
+      min-height: var(--app-viewport-height);
+      overflow-y: auto;
     }
 
     button,
@@ -270,8 +283,226 @@
       white-space: nowrap;
     }
 
+    .login-main {
+      display: none;
+      flex: 1 0 auto;
+      min-height: calc(var(--app-viewport-height) - 7.5rem);
+      padding: clamp(2rem, 6vw, 5rem) 1.25rem;
+      background:
+        radial-gradient(
+          circle at 12% 18%,
+          rgb(241 90 36 / 10%),
+          transparent 22rem
+        ),
+        linear-gradient(180deg, var(--surface-default), var(--surface-subtle));
+    }
+
+    :root.auth-login .login-main {
+      display: flex;
+    }
+
+    .login-layout {
+      width: 100%;
+      max-width: 72rem;
+      margin: auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(22rem, 0.9fr);
+      grid-template-areas: "intro card";
+      align-items: center;
+      gap: clamp(2.5rem, 7vw, 6rem);
+    }
+
+    .login-intro {
+      grid-area: intro;
+      max-width: 38rem;
+    }
+
+    .login-eyebrow {
+      margin: 0 0 0.75rem;
+      color: var(--accent-text);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .login-intro h1 {
+      max-width: 36rem;
+      margin: 0;
+      color: var(--text-default);
+      font-size: clamp(2.25rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+
+    .login-intro__summary {
+      max-width: 34rem;
+      margin: 1.5rem 0 0;
+      color: var(--text-subtle);
+      font-size: clamp(1rem, 1.5vw, 1.125rem);
+      line-height: 1.7;
+    }
+
+    .login-benefits {
+      margin: 2rem 0 0;
+      padding: 0;
+      display: grid;
+      gap: 1rem;
+      list-style: none;
+    }
+
+    .login-benefits li {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+      gap: 0.75rem;
+      color: var(--text-default);
+      font-weight: 600;
+    }
+
+    .login-benefits sgds-icon {
+      margin-top: 0.125rem;
+      color: var(--accent-text);
+    }
+
+    .login-card {
+      grid-area: card;
+      width: 100%;
+      max-width: 28rem;
+      justify-self: end;
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      border: 0.0625rem solid var(--border-subtle);
+      border-radius: 1rem;
+      background: var(--surface-default);
+      box-shadow: 0 1.25rem 3rem rgb(0 0 0 / 10%);
+    }
+
+    .login-card__icon {
+      width: 3rem;
+      height: 3rem;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--notice-surface);
+      color: var(--accent-text);
+    }
+
+    .login-card h2 {
+      margin: 1.25rem 0 0;
+      color: var(--text-default);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.2;
+    }
+
+    .login-card__description {
+      margin: 0.75rem 0 0;
+      color: var(--text-subtle);
+      line-height: 1.6;
+    }
+
+    .singpass-login-button {
+      width: 100%;
+      min-height: 3.25rem;
+      margin-top: 1.75rem;
+      padding: 0.75rem 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.625rem;
+      border: 0.0625rem solid var(--singpass-border);
+      border-radius: 0.25rem;
+      background: #ffffff;
+      color: #111111;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1;
+      transition:
+        background-color 140ms ease,
+        border-color 140ms ease,
+        box-shadow 140ms ease;
+    }
+
+    .singpass-login-button:hover:not(:disabled) {
+      border-color: #9b9da1;
+      background: #f7f7f7;
+    }
+
+    .singpass-login-button:active:not(:disabled) {
+      background: #eeeeef;
+    }
+
+    .singpass-login-button:focus-visible {
+      outline: 0.25rem solid var(--focus-ring);
+      outline-offset: 0.125rem;
+    }
+
+    .singpass-login-button:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+
+    .singpass-login-button img {
+      display: block;
+      width: 6.25rem;
+      height: auto;
+    }
+
+    .login-card__guidance {
+      margin: 1rem 0 0;
+      color: var(--text-subtle);
+      font-size: 0.875rem;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    .login-card__guidance a {
+      color: var(--link-text);
+      font-weight: 600;
+      text-underline-offset: 0.1875rem;
+    }
+
+    .login-prototype-note {
+      margin-top: 1.5rem;
+      padding: 0.875rem 1rem;
+      border-left: 0.25rem solid var(--sgds-product-primary-500);
+      background: var(--notice-surface);
+      color: var(--notice-text);
+      font-size: 0.8125rem;
+      line-height: 1.5;
+    }
+
+    .login-prototype-note strong {
+      display: block;
+      margin-bottom: 0.125rem;
+    }
+
+    .singpass-login-status {
+      min-height: 1.5rem;
+      margin: 0.75rem 0 0;
+      color: var(--accent-text);
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .singpass-login-status:empty {
+      display: none;
+    }
+
+    .login-footer {
+      display: none;
+      flex: 0 0 auto;
+    }
+
+    :root.auth-login .login-footer {
+      display: block;
+    }
+
     .chat-main {
       position: relative;
+      display: none;
       flex: 1 1 auto;
       min-width: 0;
       min-height: 14rem;
@@ -280,6 +511,10 @@
       background:
         linear-gradient(180deg, var(--chat-gradient), transparent 9rem),
         var(--surface-subtle);
+    }
+
+    :root.auth-service .chat-main {
+      display: block;
     }
 
     .chat-workspace {
@@ -635,6 +870,33 @@
     }
 
     @media (max-width: 48rem) {
+      .login-main {
+        min-height: auto;
+        padding-top: 2.5rem;
+        padding-bottom: 3rem;
+      }
+
+      .login-layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "card"
+          "intro";
+        gap: 2.5rem;
+      }
+
+      .login-intro {
+        max-width: none;
+      }
+
+      .login-intro h1 {
+        font-size: clamp(2.25rem, 11vw, 3.25rem);
+      }
+
+      .login-card {
+        max-width: none;
+        justify-self: stretch;
+      }
+
       .brand-lockup {
         gap: 0.75rem;
       }
@@ -654,6 +916,23 @@
     }
 
     @media (max-width: 36rem) {
+      .login-main {
+        padding-inline: 1rem;
+      }
+
+      .login-benefits {
+        margin-top: 1.5rem;
+      }
+
+      .login-card {
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+      }
+
+      .singpass-login-button {
+        min-height: 3.5rem;
+      }
+
       .brand-lockup {
         gap: 0.5rem;
       }
@@ -734,7 +1013,8 @@
       }
 
       .app-header,
-      .chat-main {
+      .chat-main,
+      .login-footer {
         display: none;
       }
     }
@@ -747,7 +1027,7 @@
 </head>
 
 <body>
-  <a class="skip-link" href="#webchat">Skip to chat</a>
+  <a id="skip-link" class="skip-link" href="#login-view">Skip to content</a>
 
   <header class="app-header">
     <sgds-masthead fluid></sgds-masthead>
@@ -787,6 +1067,103 @@
       ></sgds-icon-button>
     </sgds-mainnav>
   </header>
+
+  <main
+    id="login-view"
+    class="login-main"
+    aria-labelledby="login-title"
+  >
+    <div class="login-layout">
+      <section class="login-card" aria-labelledby="singpass-login-title">
+        <div class="login-card__icon" aria-hidden="true">
+          <sgds-icon name="lock" size="lg"></sgds-icon>
+        </div>
+        <h2 id="singpass-login-title">Log in to continue</h2>
+        <p class="login-card__description">
+          Use Singpass to verify your identity. You will complete the secure
+          login through Singpass before returning to Guardian Support Hub.
+        </p>
+
+        <button
+          id="singpass-login-button"
+          class="singpass-login-button"
+          type="button"
+          aria-label="Log in with Singpass"
+          aria-describedby="singpass-login-guidance prototype-login-note"
+        >
+          <span>Log in with</span>
+          <img
+            src="assets/singpass-logo-red.svg"
+            width="468"
+            height="81"
+            alt="Singpass"
+          >
+        </button>
+
+        <p id="singpass-login-guidance" class="login-card__guidance">
+          You need the Singpass app to log in.
+          <a
+            href="https://www.singpass.gov.sg/home/ui/support"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Get Singpass help
+          </a>
+        </p>
+
+        <div
+          id="prototype-login-note"
+          class="login-prototype-note"
+          role="note"
+        >
+          <strong>Prototype mode</strong>
+          Singpass authentication is not connected yet. This button opens a
+          frontend preview of the support hub for testing.
+        </div>
+
+        <p
+          id="singpass-login-status"
+          class="singpass-login-status"
+          aria-live="polite"
+        ></p>
+      </section>
+
+      <section class="login-intro">
+        <p class="login-eyebrow">Secure HR support</p>
+        <h1 id="login-title">Sign in to Guardian Support Hub</h1>
+        <p class="login-intro__summary">
+          Access HR information and support for Digital and Intelligence
+          Service personnel. Verify your identity with Singpass to continue.
+        </p>
+
+        <ul class="login-benefits">
+          <li>
+            <sgds-icon name="shield-tick" size="md"></sgds-icon>
+            <span>Your identity is verified before you access the service.</span>
+          </li>
+          <li>
+            <sgds-icon name="chat-dots" size="md"></sgds-icon>
+            <span>Get HR guidance and submit enquiries in one place.</span>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <sgds-footer
+    id="login-footer"
+    class="login-footer"
+    contactHref="https://www.dis.gov.sg/about-us/contact-us/"
+    feedbackHref="https://www.dis.gov.sg/about-us/contact-us/"
+    privacyHref="https://www.dis.gov.sg/privacy-statement/"
+    termsOfUseHref="https://www.dis.gov.sg/terms-of-use/"
+    copyrightLiner="Government of Singapore"
+  >
+    <h2 slot="title">Guardian Support Hub</h2>
+    <p slot="description">
+      Secure HR information and support for DIS personnel.
+    </p>
+  </sgds-footer>
 
   <main class="chat-main" aria-labelledby="page-title">
     <h1 id="page-title" class="visually-hidden">Guardian Support Hub</h1>
@@ -947,6 +1324,13 @@
       var supportPanelMarker;
       var mobileNavigationQuery;
       var viewportSyncFrame;
+      var singpassLoginButton;
+      var singpassLoginStatus;
+      var skipLink;
+      var vicaFrameInitialised = false;
+      var vicaScriptRequested = false;
+      // Replace with the backend Singpass authorization endpoint when ready.
+      var singpassAuthorizationUrl = "";
       var themeStorageKey = "guardian-support-hub-theme";
 
       function currentTheme() {
@@ -1000,6 +1384,79 @@
         themeToggle.addEventListener("click", function () {
           applyTheme(currentTheme() === "dark" ? "light" : "dark", true);
         });
+      }
+
+      function loadVICAScript() {
+        if (vicaScriptRequested) {
+          return;
+        }
+
+        vicaScriptRequested = true;
+
+        var script = document.createElement("script");
+        script.async = true;
+        script.type = "text/javascript";
+        script.src = "https://webchat.vica.gov.sg/static/js/chat.js";
+        script.referrerPolicy = "origin";
+        script.addEventListener("load", window.vicaScriptLoaded, {
+          once: true
+        });
+        script.addEventListener("error", window.vicaScriptFailed, {
+          once: true
+        });
+        document.body.appendChild(script);
+      }
+
+      function openAuthenticatedService() {
+        document.documentElement.classList.remove("auth-login");
+        document.documentElement.classList.add("auth-service");
+
+        if (skipLink) {
+          skipLink.setAttribute("href", "#webchat");
+          skipLink.textContent = "Skip to chat";
+        }
+
+        window.scrollTo(0, 0);
+        initialiseVICAFrame();
+        loadVICAScript();
+
+        window.requestAnimationFrame(function () {
+          scheduleViewportSync();
+          if (host) {
+            host.focus();
+          }
+        });
+      }
+
+      function startSingpassLogin() {
+        if (singpassAuthorizationUrl) {
+          window.location.assign(singpassAuthorizationUrl);
+          return;
+        }
+
+        singpassLoginButton.disabled = true;
+        singpassLoginButton.setAttribute("aria-busy", "true");
+        singpassLoginStatus.textContent = "Opening the support hub preview...";
+
+        window.setTimeout(function () {
+          singpassLoginButton.disabled = false;
+          singpassLoginButton.removeAttribute("aria-busy");
+          openAuthenticatedService();
+        }, 600);
+      }
+
+      function initialiseAuthentication() {
+        singpassLoginButton = document.getElementById(
+          "singpass-login-button"
+        );
+        singpassLoginStatus = document.getElementById(
+          "singpass-login-status"
+        );
+        skipLink = document.getElementById("skip-link");
+
+        if (singpassLoginButton) {
+          singpassLoginButton.addEventListener("click", startSingpassLogin);
+        }
       }
 
       function setMobileNavigationState(isMobile) {
@@ -1419,13 +1876,17 @@
       }
 
       function initialiseVICAFrame() {
+        if (vicaFrameInitialised) {
+          return;
+        }
+
+        vicaFrameInitialised = true;
         host = document.getElementById("webchat");
         loader = document.getElementById("chat-loader");
         loaderSpinner = document.getElementById("chat-loader-spinner");
         loaderText = document.getElementById("chat-loader-text");
 
         syncAppViewportHeight();
-        initialiseThemeToggle();
         initialiseMobileNavigation();
         initialiseChatNavigation();
         patchVICAShadowLayout();
@@ -1437,21 +1898,6 @@
           document.addEventListener(eventName, blockMinimize, true);
           window.addEventListener(eventName, blockMinimize, true);
         });
-
-        window.addEventListener("load", scheduleViewportSync);
-        window.addEventListener("resize", scheduleViewportSync);
-        window.addEventListener("orientationchange", scheduleViewportSync);
-
-        if (window.visualViewport) {
-          window.visualViewport.addEventListener(
-            "resize",
-            scheduleViewportSync
-          );
-          window.visualViewport.addEventListener(
-            "scroll",
-            scheduleViewportSync
-          );
-        }
 
         window.setTimeout(function () {
           if (!ready && !failed && loaderText) {
@@ -1484,21 +1930,35 @@
         }
       };
 
+      function initialisePage() {
+        syncAppViewportHeight();
+        initialiseThemeToggle();
+        initialiseAuthentication();
+
+        window.addEventListener("load", scheduleViewportSync);
+        window.addEventListener("resize", scheduleViewportSync);
+        window.addEventListener("orientationchange", scheduleViewportSync);
+
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener(
+            "resize",
+            scheduleViewportSync
+          );
+          window.visualViewport.addEventListener(
+            "scroll",
+            scheduleViewportSync
+          );
+        }
+      }
+
       if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initialiseVICAFrame, { once: true });
+        document.addEventListener("DOMContentLoaded", initialisePage, {
+          once: true
+        });
       } else {
-        initialiseVICAFrame();
+        initialisePage();
       }
     }());
   </script>
-
-  <script
-    async
-    type="text/javascript"
-    src="https://webchat.vica.gov.sg/static/js/chat.js"
-    referrerpolicy="origin"
-    onload="window.vicaScriptLoaded()"
-    onerror="window.vicaScriptFailed()"
-  ></script>
 </body>
 </html>

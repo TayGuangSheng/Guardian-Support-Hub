@@ -311,6 +311,57 @@
       line-height: 1.5;
     }
 
+    .support-panel__new-chat {
+      margin-bottom: 1.25rem;
+    }
+
+    .support-panel__new-chat-status {
+      min-height: 1.25rem;
+      margin-top: 0.5rem;
+      color: var(--accent-text);
+      font-size: 0.8125rem;
+      font-weight: 600;
+    }
+
+    .support-panel__new-chat-status:empty {
+      display: none;
+    }
+
+    .support-panel__section + .support-panel__section {
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 0.0625rem solid var(--border-light);
+    }
+
+    .support-panel__recent-empty {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+      gap: 0.625rem;
+      margin-top: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      background: var(--surface-muted);
+      color: var(--text-subtle);
+    }
+
+    .support-panel__recent-empty p {
+      margin: 0;
+    }
+
+    .support-panel__recent-empty strong {
+      display: block;
+      margin-bottom: 0.125rem;
+      color: var(--text-default);
+      font-size: 0.875rem;
+    }
+
+    .support-panel__recent-empty span {
+      display: block;
+      font-size: 0.8125rem;
+      line-height: 1.4;
+    }
+
     .support-panel__prompt-list {
       display: grid;
       gap: 0.5rem;
@@ -736,44 +787,82 @@
     <h1 id="page-title" class="visually-hidden">Guardian Support Hub</h1>
 
     <div class="chat-workspace">
-      <aside class="support-panel" aria-labelledby="support-panel-title">
+      <aside class="support-panel" aria-label="Chat navigation">
         <div class="support-panel__content">
-          <h2 id="support-panel-title">Quick links</h2>
-          <ul class="support-panel__prompt-list">
-            <li>
-              <button
-                class="support-panel__prompt"
-                type="button"
-                data-copy-prompt="How do I apply for leave?"
-              >How do I apply for leave?</button>
-            </li>
-            <li>
-              <button
-                class="support-panel__prompt"
-                type="button"
-                data-copy-prompt="Where can I find HR policies?"
-              >Where can I find HR policies?</button>
-            </li>
-            <li>
-              <button
-                class="support-panel__prompt"
-                type="button"
-                data-copy-prompt="Who can I contact about my benefits?"
-              >Who can I contact about my benefits?</button>
-            </li>
-            <li>
-              <button
-                class="support-panel__prompt"
-                type="button"
-                data-copy-prompt="How do I update my personal details?"
-              >How do I update my personal details?</button>
-            </li>
-          </ul>
-          <p
-            id="prompt-copy-status"
-            class="support-panel__status"
-            aria-live="polite"
-          ></p>
+          <div class="support-panel__new-chat">
+            <sgds-button
+              id="new-chat-button"
+              fullWidth
+              variant="outline"
+              tone="neutral"
+              ariaLabel="Start a new chat"
+              disabled
+            >
+              <sgds-icon slot="leftIcon" name="plus"></sgds-icon>
+              New chat
+            </sgds-button>
+            <p
+              id="new-chat-status"
+              class="support-panel__new-chat-status"
+              aria-live="polite"
+            ></p>
+          </div>
+
+          <section
+            class="support-panel__section"
+            aria-labelledby="recent-chats-title"
+          >
+            <h2 id="recent-chats-title">Recent</h2>
+            <div class="support-panel__recent-empty">
+              <sgds-icon name="chat-left-text" size="md"></sgds-icon>
+              <p>
+                <strong>No saved chats</strong>
+                <span>Secure history will be added with Singpass sign-in.</span>
+              </p>
+            </div>
+          </section>
+
+          <section
+            class="support-panel__section"
+            aria-labelledby="support-panel-title"
+          >
+            <h2 id="support-panel-title">Quick links</h2>
+            <ul class="support-panel__prompt-list">
+              <li>
+                <button
+                  class="support-panel__prompt"
+                  type="button"
+                  data-copy-prompt="How do I apply for leave?"
+                >How do I apply for leave?</button>
+              </li>
+              <li>
+                <button
+                  class="support-panel__prompt"
+                  type="button"
+                  data-copy-prompt="Where can I find HR policies?"
+                >Where can I find HR policies?</button>
+              </li>
+              <li>
+                <button
+                  class="support-panel__prompt"
+                  type="button"
+                  data-copy-prompt="Who can I contact about my benefits?"
+                >Who can I contact about my benefits?</button>
+              </li>
+              <li>
+                <button
+                  class="support-panel__prompt"
+                  type="button"
+                  data-copy-prompt="How do I update my personal details?"
+                >How do I update my personal details?</button>
+              </li>
+            </ul>
+            <p
+              id="prompt-copy-status"
+              class="support-panel__status"
+              aria-live="polite"
+            ></p>
+          </section>
         </div>
 
         <div
@@ -842,6 +931,8 @@
       var lastMaximizeAt = 0;
       var themeToggle;
       var themeColorMeta;
+      var newChatButton;
+      var newChatStatus;
       var themeStorageKey = "guardian-support-hub-theme";
 
       function currentTheme() {
@@ -967,6 +1058,48 @@
             showPrompt();
           });
         });
+      }
+
+      function findVICAAction(label) {
+        if (!host || !host.shadowRoot) {
+          return null;
+        }
+
+        var labels = Array.from(host.shadowRoot.querySelectorAll("span"));
+        var actionLabel = labels.find(function (element) {
+          return element.textContent.trim() === label;
+        });
+
+        return actionLabel ? actionLabel.parentElement : null;
+      }
+
+      function requestNewChat() {
+        var restartAction = findVICAAction("End & restart chat");
+
+        if (!restartAction) {
+          if (newChatStatus) {
+            newChatStatus.textContent =
+              "The chat is still loading. Please try again shortly.";
+          }
+          return;
+        }
+
+        if (newChatStatus) {
+          newChatStatus.textContent = "";
+        }
+
+        restartAction.click();
+      }
+
+      function initialiseChatNavigation() {
+        newChatButton = document.getElementById("new-chat-button");
+        newChatStatus = document.getElementById("new-chat-status");
+
+        if (!newChatButton) {
+          return;
+        }
+
+        newChatButton.addEventListener("click", requestNewChat);
       }
 
       function patchVICAShadowLayout() {
@@ -1119,6 +1252,11 @@
         ready = true;
         document.documentElement.classList.add("vica-ready");
 
+        if (newChatButton) {
+          newChatButton.disabled = false;
+          newChatButton.removeAttribute("disabled");
+        }
+
         if (loader) {
           loader.setAttribute("aria-live", "off");
         }
@@ -1188,6 +1326,7 @@
         loaderText = document.getElementById("chat-loader-text");
 
         initialiseThemeToggle();
+        initialiseChatNavigation();
         initialisePromptCopy();
         patchVICAShadowLayout();
         syncVICAFullscreenOffset();

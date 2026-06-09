@@ -1354,19 +1354,33 @@
 
         themeToggleSizeQuery = window.matchMedia("(max-width: 36rem)");
 
-        function syncThemeToggleSize() {
+        function syncHeaderControlAppearance() {
+          var isMobile = themeToggleSizeQuery.matches;
+          var mobileMenu = document.getElementById("mobile-nav-toggle");
+
           themeToggle.setAttribute(
             "size",
-            themeToggleSizeQuery.matches ? "md" : "lg"
+            isMobile ? "md" : "lg"
           );
+          themeToggle.setAttribute("variant", isMobile ? "ghost" : "outline");
+
+          if (mobileMenu) {
+            mobileMenu.setAttribute(
+              "variant",
+              isMobile ? "ghost" : "outline"
+            );
+          }
         }
 
-        syncThemeToggleSize();
+        syncHeaderControlAppearance();
 
         if (typeof themeToggleSizeQuery.addEventListener === "function") {
-          themeToggleSizeQuery.addEventListener("change", syncThemeToggleSize);
+          themeToggleSizeQuery.addEventListener(
+            "change",
+            syncHeaderControlAppearance
+          );
         } else {
-          themeToggleSizeQuery.addListener(syncThemeToggleSize);
+          themeToggleSizeQuery.addListener(syncHeaderControlAppearance);
         }
 
         themeToggle.addEventListener("click", function () {
@@ -1492,6 +1506,11 @@
         }
 
         mobileNavToggle.setAttribute("name", "menu");
+        mobileNavToggle.setAttribute(
+          "variant",
+          themeToggleSizeQuery && themeToggleSizeQuery.matches ?
+            "ghost" : "outline"
+        );
         supportPanelMarker = document.createComment("support-panel-position");
         supportPanel.parentNode.insertBefore(supportPanelMarker, supportPanel);
         mobileNavigationQuery = window.matchMedia("(max-width: 64rem)");

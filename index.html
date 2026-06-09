@@ -1313,6 +1313,15 @@
           "dark" : "light";
       }
 
+      function syncVICATheme(theme) {
+        if (!host) {
+          return;
+        }
+
+        host.setAttribute("data-theme", theme);
+        patchVICAShadowLayout();
+      }
+
       function applyTheme(theme, shouldPersist) {
         var isDark = theme === "dark";
 
@@ -1332,10 +1341,7 @@
           themeToggle.setAttribute("title", toggleLabel);
         }
 
-        if (host) {
-          host.setAttribute("data-theme", theme);
-          patchVICAShadowLayout();
-        }
+        syncVICATheme(theme);
 
         if (shouldPersist) {
           try {
@@ -1886,6 +1892,7 @@
         loaderSpinner = document.getElementById("chat-loader-spinner");
         loaderText = document.getElementById("chat-loader-text");
 
+        syncVICATheme(currentTheme());
         syncAppViewportHeight();
         initialiseMobileNavigation();
         initialiseChatNavigation();

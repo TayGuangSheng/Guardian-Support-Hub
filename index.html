@@ -93,7 +93,6 @@
       --notice-surface: var(--sgds-product-primary-100);
       --notice-border: var(--sgds-product-primary-300);
       --notice-text: var(--sgds-product-primary-900);
-      --prompt-hover-surface: var(--sgds-product-primary-100);
       --avatar-surface-end: #ffffff;
       --placeholder-text: #686868;
       --link-text: #0269d0;
@@ -116,7 +115,6 @@
       --notice-surface: #2a1812;
       --notice-border: #8f2d08;
       --notice-text: #ffd8ca;
-      --prompt-hover-surface: #241b18;
       --avatar-surface-end: #161a22;
       --placeholder-text: #a9b0bd;
       --link-text: #8ec5ff;
@@ -362,46 +360,53 @@
       line-height: 1.4;
     }
 
-    .support-panel__prompt-list {
+    .support-panel__escalation {
+      margin-top: 0.75rem;
+      padding: 1rem;
+      border: 0.0625rem solid var(--notice-border);
+      border-radius: 0.75rem;
+      background: var(--notice-surface);
+    }
+
+    .support-panel__escalation-heading {
       display: grid;
-      gap: 0.5rem;
-      margin: 1rem 0 0;
-      padding: 0;
-      list-style: none;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+      gap: 0.625rem;
+      color: var(--notice-text);
     }
 
-    .support-panel__prompt {
-      width: 100%;
-      min-height: 2.75rem;
-      padding: 0.625rem 0.75rem;
-      border: 0.0625rem solid var(--border-subtle);
-      border-radius: 0.5rem;
-      background: var(--surface-default);
-      color: var(--text-default);
-      font: inherit;
-      font-size: 0.875rem;
-      line-height: 1.35;
-      text-align: left;
-      cursor: pointer;
+    .support-panel__escalation-heading h2 {
+      color: var(--notice-text);
     }
 
-    .support-panel__prompt:hover {
-      border-color: var(--dis-orange-dark);
-      background: var(--prompt-hover-surface);
+    .support-panel__escalation .support-panel__escalation-label {
+      margin: 0 0 0.125rem !important;
+      color: var(--notice-text);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
     }
 
-    .support-panel__prompt:focus-visible {
-      border-color: var(--dis-orange-dark);
-      outline: 0.25rem solid var(--focus-ring);
-      outline-offset: 0.125rem;
+    .support-panel__escalation p {
+      margin: 0.625rem 0 0;
+      color: var(--notice-text);
     }
 
-    .support-panel__status {
+    .support-panel__escalation-action {
+      margin-top: 1rem;
+    }
+
+    .support-panel__escalation-status {
       min-height: 1.25rem;
-      margin-top: 0.625rem;
-      color: var(--accent-text);
+      margin-top: 0.5rem;
+      color: var(--notice-text);
       font-size: 0.8125rem;
       font-weight: 600;
+    }
+
+    .support-panel__escalation-status:empty {
+      display: none;
     }
 
     .support-panel__profile-wrap {
@@ -688,9 +693,6 @@
         padding: 1rem;
       }
 
-      .support-panel__prompt-list {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
     }
 
     @media (max-height: 42rem) and (orientation: landscape) {
@@ -700,12 +702,6 @@
 
       .support-panel {
         max-height: 10rem;
-      }
-    }
-
-    @media (max-width: 36rem) {
-      .support-panel__prompt-list {
-        grid-template-columns: 1fr;
       }
     }
 
@@ -824,44 +820,39 @@
 
           <section
             class="support-panel__section"
-            aria-labelledby="support-panel-title"
+            aria-labelledby="support-escalation-title"
           >
-            <h2 id="support-panel-title">Quick links</h2>
-            <ul class="support-panel__prompt-list">
-              <li>
-                <button
-                  class="support-panel__prompt"
-                  type="button"
-                  data-copy-prompt="How do I apply for leave?"
-                >How do I apply for leave?</button>
-              </li>
-              <li>
-                <button
-                  class="support-panel__prompt"
-                  type="button"
-                  data-copy-prompt="Where can I find HR policies?"
-                >Where can I find HR policies?</button>
-              </li>
-              <li>
-                <button
-                  class="support-panel__prompt"
-                  type="button"
-                  data-copy-prompt="Who can I contact about my benefits?"
-                >Who can I contact about my benefits?</button>
-              </li>
-              <li>
-                <button
-                  class="support-panel__prompt"
-                  type="button"
-                  data-copy-prompt="How do I update my personal details?"
-                >How do I update my personal details?</button>
-              </li>
-            </ul>
-            <p
-              id="prompt-copy-status"
-              class="support-panel__status"
-              aria-live="polite"
-            ></p>
+            <div class="support-panel__escalation">
+              <div class="support-panel__escalation-heading">
+                <sgds-icon name="life-buoy" size="md"></sgds-icon>
+                <div>
+                  <p class="support-panel__escalation-label">
+                    Escalate to support
+                  </p>
+                  <h2 id="support-escalation-title">Need more help?</h2>
+                </div>
+              </div>
+              <p>
+                Start an enquiry with the HR support team. A support officer
+                will follow up if needed.
+              </p>
+              <div class="support-panel__escalation-action">
+                <sgds-button
+                  id="support-enquiry-button"
+                  fullWidth
+                  ariaLabel="Start an HR support enquiry"
+                  disabled
+                >
+                  <sgds-icon slot="leftIcon" name="send"></sgds-icon>
+                  Start enquiry
+                </sgds-button>
+              </div>
+              <p
+                id="support-enquiry-status"
+                class="support-panel__escalation-status"
+                aria-live="polite"
+              ></p>
+            </div>
           </section>
         </div>
 
@@ -933,6 +924,8 @@
       var themeColorMeta;
       var newChatButton;
       var newChatStatus;
+      var supportEnquiryButton;
+      var supportEnquiryStatus;
       var themeStorageKey = "guardian-support-hub-theme";
 
       function currentTheme() {
@@ -1029,37 +1022,6 @@
         host.style.setProperty("--guardian-vica-top-offset", topOffset + "px");
       }
 
-      function initialisePromptCopy() {
-        var status = document.getElementById("prompt-copy-status");
-        var buttons = document.querySelectorAll("[data-copy-prompt]");
-
-        buttons.forEach(function (button) {
-          button.addEventListener("click", function () {
-            var prompt = button.getAttribute("data-copy-prompt") ||
-              button.textContent.trim();
-
-            function markCopied() {
-              if (status) {
-                status.textContent = "Copied. Paste it into the chat.";
-              }
-            }
-
-            function showPrompt() {
-              if (status) {
-                status.textContent = prompt;
-              }
-            }
-
-            if (navigator.clipboard && window.isSecureContext) {
-              navigator.clipboard.writeText(prompt).then(markCopied, showPrompt);
-              return;
-            }
-
-            showPrompt();
-          });
-        });
-      }
-
       function findVICAAction(label) {
         if (!host || !host.shadowRoot) {
           return null;
@@ -1094,12 +1056,54 @@
       function initialiseChatNavigation() {
         newChatButton = document.getElementById("new-chat-button");
         newChatStatus = document.getElementById("new-chat-status");
+        supportEnquiryButton = document.getElementById(
+          "support-enquiry-button"
+        );
+        supportEnquiryStatus = document.getElementById(
+          "support-enquiry-status"
+        );
 
-        if (!newChatButton) {
+        if (newChatButton) {
+          newChatButton.addEventListener("click", requestNewChat);
+        }
+
+        if (supportEnquiryButton) {
+          supportEnquiryButton.addEventListener("click", startSupportEnquiry);
+        }
+      }
+
+      function startSupportEnquiry() {
+        var input = host && host.shadowRoot ?
+          host.shadowRoot.querySelector("textarea") : null;
+
+        if (!input) {
+          if (supportEnquiryStatus) {
+            supportEnquiryStatus.textContent =
+              "The chat is still loading. Try again shortly.";
+          }
           return;
         }
 
-        newChatButton.addEventListener("click", requestNewChat);
+        var prompt =
+          "I would like to submit an enquiry to the HR support team.";
+        var valueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLTextAreaElement.prototype,
+          "value"
+        ).set;
+
+        valueSetter.call(input, prompt);
+        input.dispatchEvent(new InputEvent("input", {
+          bubbles: true,
+          inputType: "insertText",
+          data: prompt
+        }));
+        input.focus();
+        input.scrollIntoView({ block: "nearest" });
+
+        if (supportEnquiryStatus) {
+          supportEnquiryStatus.textContent =
+            "Enquiry request added to the chat. Review and send it.";
+        }
       }
 
       function patchVICAShadowLayout() {
@@ -1257,6 +1261,11 @@
           newChatButton.removeAttribute("disabled");
         }
 
+        if (supportEnquiryButton) {
+          supportEnquiryButton.disabled = false;
+          supportEnquiryButton.removeAttribute("disabled");
+        }
+
         if (loader) {
           loader.setAttribute("aria-live", "off");
         }
@@ -1327,7 +1336,6 @@
 
         initialiseThemeToggle();
         initialiseChatNavigation();
-        initialisePromptCopy();
         patchVICAShadowLayout();
         syncVICAFullscreenOffset();
         watchVICA();

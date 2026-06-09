@@ -903,15 +903,15 @@
       }
 
       .brand-logo {
-        width: 4.5rem;
+        width: 5rem;
       }
 
       .brand-logo--dark {
-        height: 1.721rem;
+        height: 1.912rem;
       }
 
       .brand-title {
-        font-size: 1rem;
+        font-size: 1.0625rem;
       }
 
       #webchat button {
@@ -919,6 +919,20 @@
         min-height: 3rem;
       }
 
+    }
+
+    @media (max-width: 22.25rem) {
+      .brand-logo {
+        width: 4rem;
+      }
+
+      .brand-logo--dark {
+        height: 1.53rem;
+      }
+
+      .brand-title {
+        font-size: 0.9375rem;
+      }
     }
 
     @media (max-width: 64rem) {
@@ -1184,6 +1198,7 @@
                   href="https://form.gov.sg/"
                   target="_blank"
                   ariaLabel="Start enquiry"
+                  fullWidth
                 >
                   Start enquiry
                 </sgds-button>
@@ -1265,6 +1280,7 @@
       var failed = false;
       var lastMaximizeAt = 0;
       var themeToggle;
+      var themeToggleSizeQuery;
       var themeColorMeta;
       var newChatButton;
       var newChatStatus;
@@ -1329,6 +1345,23 @@
 
         if (!themeToggle) {
           return;
+        }
+
+        themeToggleSizeQuery = window.matchMedia("(max-width: 36rem)");
+
+        function syncThemeToggleSize() {
+          themeToggle.setAttribute(
+            "size",
+            themeToggleSizeQuery.matches ? "md" : "lg"
+          );
+        }
+
+        syncThemeToggleSize();
+
+        if (typeof themeToggleSizeQuery.addEventListener === "function") {
+          themeToggleSizeQuery.addEventListener("change", syncThemeToggleSize);
+        } else {
+          themeToggleSizeQuery.addListener(syncThemeToggleSize);
         }
 
         themeToggle.addEventListener("click", function () {

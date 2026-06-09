@@ -97,6 +97,7 @@
       --placeholder-text: #686868;
       --link-text: #0269d0;
       --selection-text: var(--dis-black);
+      --app-viewport-height: 100dvh;
     }
 
     :root.sgds-night-theme {
@@ -127,8 +128,7 @@
       box-sizing: border-box;
     }
 
-    html,
-    body {
+    html {
       width: 100%;
       height: 100%;
       margin: 0;
@@ -136,9 +136,11 @@
     }
 
     body {
-      min-height: 100vh;
-      min-height: 100svh;
-      min-height: 100dvh;
+      width: 100%;
+      height: var(--app-viewport-height);
+      min-height: 0;
+      margin: 0;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       background: var(--surface-default);
@@ -212,6 +214,21 @@
     sgds-mainnav:not(:defined) {
       min-height: 5.25rem;
       background: var(--surface-default);
+    }
+
+    sgds-drawer:not(:defined) {
+      display: none;
+    }
+
+    .mobile-nav-toggle {
+      display: none;
+    }
+
+    .mobile-nav-title {
+      margin: 0;
+      color: var(--text-default);
+      font-size: 1.25rem;
+      line-height: 1.3;
     }
 
     .brand-lockup {
@@ -638,19 +655,19 @@
 
     @media (max-width: 36rem) {
       .brand-lockup {
-        gap: 0.625rem;
+        gap: 0.5rem;
       }
 
       .brand-logo {
-        width: 5.75rem;
+        width: 4.5rem;
       }
 
       .brand-logo--dark {
-        height: 2.199rem;
+        height: 1.721rem;
       }
 
       .brand-title {
-        font-size: 1.125rem;
+        font-size: 1rem;
       }
 
       #webchat button {
@@ -662,26 +679,38 @@
 
     @media (max-width: 64rem) {
       .chat-workspace {
-        flex-direction: column;
+        display: block;
       }
 
-      .support-panel {
+      .chat-surface {
         width: 100%;
-        max-height: 15rem;
-        border-right: 0;
-        border-bottom: 0.0625rem solid var(--border-subtle);
-        padding: 1rem;
+        height: 100%;
       }
 
+      .mobile-nav-toggle {
+        display: inline-flex;
+        position: absolute;
+        top: 0.75rem;
+        left: 0.75rem;
+        z-index: 8;
+        border-radius: 50%;
+        background: var(--surface-default);
+        box-shadow: 0 0.125rem 0.5rem rgb(0 0 0 / 12%);
+      }
+
+      .support-panel.support-panel--drawer {
+        width: 100%;
+        height: 100%;
+        max-height: none;
+        border: 0;
+        padding: 0;
+        background: transparent;
+      }
     }
 
     @media (max-height: 42rem) and (orientation: landscape) {
       .chat-main {
         min-height: 10rem;
-      }
-
-      .support-panel {
-        max-height: 10rem;
       }
     }
 
@@ -761,6 +790,19 @@
 
   <main class="chat-main" aria-labelledby="page-title">
     <h1 id="page-title" class="visually-hidden">Guardian Support Hub</h1>
+
+    <sgds-icon-button
+      id="mobile-nav-toggle"
+      class="mobile-nav-toggle"
+      name="menu"
+      size="md"
+      tone="neutral"
+      variant="outline"
+      ariaLabel="Open chat menu"
+      aria-controls="mobile-nav-drawer"
+      aria-expanded="false"
+      title="Open chat menu"
+    ></sgds-icon-button>
 
     <div class="chat-workspace">
       <aside class="support-panel" aria-label="Chat navigation">
@@ -875,6 +917,14 @@
     </div>
   </main>
 
+  <sgds-drawer
+    id="mobile-nav-drawer"
+    placement="start"
+    size="sm"
+  >
+    <h2 class="mobile-nav-title" slot="title">Chat menu</h2>
+  </sgds-drawer>
+
   <script>
     (function () {
       "use strict";
@@ -891,6 +941,12 @@
       var themeColorMeta;
       var newChatButton;
       var newChatStatus;
+      var mobileNavToggle;
+      var mobileNavDrawer;
+      var supportPanel;
+      var supportPanelMarker;
+      var mobileNavigationQuery;
+      var viewportSyncFrame;
       var themeStorageKey = "guardian-support-hub-theme";
 
       function currentTheme() {
@@ -943,6 +999,106 @@
 
         themeToggle.addEventListener("click", function () {
           applyTheme(currentTheme() === "dark" ? "light" : "dark", true);
+        });
+      }
+
+      function setMobileNavigationState(isMobile) {
+        if (!supportPanel || !supportPanelMarker || !mobileNavDrawer) {
+          return;
+        }
+
+        if (isMobile) {
+          supportPanel.classList.add("support-panel--drawer");
+          mobileNavDrawer.appendChild(supportPanel);
+        } else {
+          if (typeof mobileNavDrawer.hide === "function") {
+            mobileNavDrawer.hide();
+          }
+
+          supportPanel.classList.remove("support-panel--drawer");
+          supportPanelMarker.parentNode.insertBefore(
+            supportPanel,
+            supportPanelMarker.nextSibling
+          );
+        }
+
+        window.requestAnimationFrame(function () {
+          syncVICAFullscreenOffset();
+          forceVICAFullPage();
+        });
+      }
+
+      function closeMobileNavigation() {
+        if (mobileNavDrawer &&
+            typeof mobileNavDrawer.hide === "function" &&
+            mobileNavigationQuery &&
+            mobileNavigationQuery.matches) {
+          mobileNavDrawer.hide();
+        }
+      }
+
+      function initialiseMobileNavigation() {
+        mobileNavToggle = document.getElementById("mobile-nav-toggle");
+        mobileNavDrawer = document.getElementById("mobile-nav-drawer");
+        supportPanel = document.querySelector(".support-panel");
+
+        if (!mobileNavToggle || !mobileNavDrawer || !supportPanel) {
+          return;
+        }
+
+        supportPanelMarker = document.createComment("support-panel-position");
+        supportPanel.parentNode.insertBefore(supportPanelMarker, supportPanel);
+        mobileNavigationQuery = window.matchMedia("(max-width: 64rem)");
+
+        mobileNavToggle.addEventListener("click", function () {
+          if (mobileNavDrawer.open) {
+            mobileNavDrawer.hide();
+          } else {
+            mobileNavDrawer.show();
+          }
+        });
+
+        mobileNavDrawer.addEventListener("sgds-after-show", function () {
+          mobileNavToggle.setAttribute("aria-expanded", "true");
+          mobileNavToggle.setAttribute("ariaLabel", "Close chat menu");
+          mobileNavToggle.setAttribute("title", "Close chat menu");
+        });
+
+        mobileNavDrawer.addEventListener("sgds-after-hide", function () {
+          mobileNavToggle.setAttribute("aria-expanded", "false");
+          mobileNavToggle.setAttribute("ariaLabel", "Open chat menu");
+          mobileNavToggle.setAttribute("title", "Open chat menu");
+        });
+
+        if (typeof mobileNavigationQuery.addEventListener === "function") {
+          mobileNavigationQuery.addEventListener("change", function (event) {
+            setMobileNavigationState(event.matches);
+          });
+        } else {
+          mobileNavigationQuery.addListener(function (event) {
+            setMobileNavigationState(event.matches);
+          });
+        }
+
+        setMobileNavigationState(mobileNavigationQuery.matches);
+      }
+
+      function syncAppViewportHeight() {
+        var viewportHeight = window.visualViewport ?
+          window.visualViewport.height : window.innerHeight;
+
+        document.documentElement.style.setProperty(
+          "--app-viewport-height",
+          Math.round(viewportHeight) + "px"
+        );
+      }
+
+      function scheduleViewportSync() {
+        window.cancelAnimationFrame(viewportSyncFrame);
+        viewportSyncFrame = window.requestAnimationFrame(function () {
+          syncAppViewportHeight();
+          syncVICAFullscreenOffset();
+          forceVICAFullPage();
         });
       }
 
@@ -1016,6 +1172,7 @@
         }
 
         restartAction.click();
+        closeMobileNavigation();
       }
 
       function initialiseChatNavigation() {
@@ -1120,6 +1277,18 @@
           "  [data-testid=\"header-app-name\"]",
           ") {",
           "  display: none !important;",
+          "}",
+          "#vica-shadow-container > div[class*=\"font-\"][class*=\"w-full\"][class*=\"relative\"] {",
+          "  height: 100% !important;",
+          "  min-height: 0 !important;",
+          "}",
+          "#vica-shadow-container #chat-input {",
+          "  pointer-events: auto !important;",
+          "  touch-action: manipulation;",
+          "  cursor: text !important;",
+          "  user-select: text !important;",
+          "  -webkit-user-select: text !important;",
+          "  font-size: 16px !important;",
           "}",
           "#vica-shadow-container [class*=\"min-h-[calc(100dvh-448px)]\"] {",
           "  min-height: max(0px, calc(100dvh - var(--guardian-vica-top-offset, 0px) - 456px)) !important;",
@@ -1255,7 +1424,9 @@
         loaderSpinner = document.getElementById("chat-loader-spinner");
         loaderText = document.getElementById("chat-loader-text");
 
+        syncAppViewportHeight();
         initialiseThemeToggle();
+        initialiseMobileNavigation();
         initialiseChatNavigation();
         patchVICAShadowLayout();
         syncVICAFullscreenOffset();
@@ -1267,11 +1438,20 @@
           window.addEventListener(eventName, blockMinimize, true);
         });
 
-        window.addEventListener("load", forceVICAFullPage);
-        window.addEventListener("resize", function () {
-          syncVICAFullscreenOffset();
-          forceVICAFullPage();
-        });
+        window.addEventListener("load", scheduleViewportSync);
+        window.addEventListener("resize", scheduleViewportSync);
+        window.addEventListener("orientationchange", scheduleViewportSync);
+
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener(
+            "resize",
+            scheduleViewportSync
+          );
+          window.visualViewport.addEventListener(
+            "scroll",
+            scheduleViewportSync
+          );
+        }
 
         window.setTimeout(function () {
           if (!ready && !failed && loaderText) {

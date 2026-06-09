@@ -380,14 +380,6 @@
       color: var(--notice-text);
     }
 
-    .support-panel__escalation .support-panel__escalation-label {
-      margin: 0 0 0.125rem !important;
-      color: var(--notice-text);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-    }
-
     .support-panel__escalation p {
       margin: 0.625rem 0 0;
       color: var(--notice-text);
@@ -825,22 +817,14 @@
             <div class="support-panel__escalation">
               <div class="support-panel__escalation-heading">
                 <sgds-icon name="life-buoy" size="md"></sgds-icon>
-                <div>
-                  <p class="support-panel__escalation-label">
-                    Escalate to support
-                  </p>
-                  <h2 id="support-escalation-title">Need more help?</h2>
-                </div>
+                <h2 id="support-escalation-title">Need more help?</h2>
               </div>
-              <p>
-                Start an enquiry with the HR support team. A support officer
-                will follow up if needed.
-              </p>
+              <p>Start an enquiry with DMD.</p>
               <div class="support-panel__escalation-action">
                 <sgds-button
                   id="support-enquiry-button"
                   fullWidth
-                  ariaLabel="Start an HR support enquiry"
+                  ariaLabel="Start a DMD enquiry"
                   disabled
                 >
                   <sgds-icon slot="leftIcon" name="send"></sgds-icon>
@@ -1084,8 +1068,7 @@
           return;
         }
 
-        var prompt =
-          "I would like to submit an enquiry to the HR support team.";
+        var prompt = "I would like to submit an enquiry to DMD.";
         var valueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLTextAreaElement.prototype,
           "value"

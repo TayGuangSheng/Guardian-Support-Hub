@@ -327,13 +327,14 @@
     }
 
     .login-intro h1 {
-      max-width: 36rem;
+      max-width: none;
       margin: 0;
       color: var(--text-default);
-      font-size: clamp(2.25rem, 5vw, 4rem);
+      font-size: clamp(1.75rem, 3.85vw, 3.5rem);
       font-weight: 700;
       letter-spacing: -0.04em;
       line-height: 1.05;
+      white-space: nowrap;
     }
 
     .login-intro__summary {
@@ -342,28 +343,6 @@
       color: var(--text-subtle);
       font-size: clamp(1rem, 1.5vw, 1.125rem);
       line-height: 1.7;
-    }
-
-    .login-benefits {
-      margin: 2rem 0 0;
-      padding: 0;
-      display: grid;
-      gap: 1rem;
-      list-style: none;
-    }
-
-    .login-benefits li {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr);
-      align-items: start;
-      gap: 0.75rem;
-      color: var(--text-default);
-      font-weight: 600;
-    }
-
-    .login-benefits sgds-icon {
-      margin-top: 0.125rem;
-      color: var(--accent-text);
     }
 
     .login-card {
@@ -393,12 +372,6 @@
       color: var(--text-default);
       font-size: clamp(1.5rem, 3vw, 2rem);
       line-height: 1.2;
-    }
-
-    .login-card__description {
-      margin: 0.75rem 0 0;
-      color: var(--text-subtle);
-      line-height: 1.6;
     }
 
     .singpass-login-button {
@@ -888,10 +861,6 @@
         max-width: none;
       }
 
-      .login-intro h1 {
-        font-size: clamp(2.25rem, 11vw, 3.25rem);
-      }
-
       .login-card {
         max-width: none;
         justify-self: stretch;
@@ -918,10 +887,6 @@
     @media (max-width: 36rem) {
       .login-main {
         padding-inline: 1rem;
-      }
-
-      .login-benefits {
-        margin-top: 1.5rem;
       }
 
       .login-card {
@@ -1079,10 +1044,6 @@
           <sgds-icon name="lock" size="lg"></sgds-icon>
         </div>
         <h2 id="singpass-login-title">Log in to continue</h2>
-        <p class="login-card__description">
-          Use Singpass to verify your identity. You will complete the secure
-          login through Singpass before returning to Guardian Support Hub.
-        </p>
 
         <button
           id="singpass-login-button"
@@ -1133,20 +1094,8 @@
         <h1 id="login-title">Guardian Support Hub</h1>
         <p class="login-intro__summary">
           Access HR information and support in one place. This service is only
-          accessible to DIS personnel. Verify your identity with Singpass to
-          continue.
+          accessible to DIS personnel.
         </p>
-
-        <ul class="login-benefits">
-          <li>
-            <sgds-icon name="shield-tick" size="md"></sgds-icon>
-            <span>Your identity is verified before you access the service.</span>
-          </li>
-          <li>
-            <sgds-icon name="chat-dots" size="md"></sgds-icon>
-            <span>Get HR guidance and submit enquiries in one place.</span>
-          </li>
-        </ul>
       </section>
     </div>
   </main>

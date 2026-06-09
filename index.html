@@ -389,16 +389,10 @@
       margin-top: 1rem;
     }
 
-    .support-panel__escalation-status {
-      min-height: 1.25rem;
-      margin-top: 0.5rem;
-      color: var(--notice-text);
-      font-size: 0.8125rem;
-      font-weight: 600;
-    }
-
-    .support-panel__escalation-status:empty {
-      display: none;
+    .support-panel__escalation-link-content {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .support-panel__profile-wrap {
@@ -821,21 +815,19 @@
               </div>
               <p>Start an enquiry with DMD.</p>
               <div class="support-panel__escalation-action">
+                <!-- Replace this URL with the DMD FormSG form URL when ready. -->
                 <sgds-button
                   id="support-enquiry-button"
-                  fullWidth
-                  ariaLabel="Start a DMD enquiry"
-                  disabled
+                  href="https://form.gov.sg/"
+                  target="_blank"
+                  ariaLabel="Start enquiry"
                 >
-                  <sgds-icon slot="leftIcon" name="send"></sgds-icon>
-                  Start enquiry
+                  <span class="support-panel__escalation-link-content">
+                    <sgds-icon name="send"></sgds-icon>
+                    <span>Start enquiry</span>
+                  </span>
                 </sgds-button>
               </div>
-              <p
-                id="support-enquiry-status"
-                class="support-panel__escalation-status"
-                aria-live="polite"
-              ></p>
             </div>
           </section>
         </div>
@@ -908,8 +900,6 @@
       var themeColorMeta;
       var newChatButton;
       var newChatStatus;
-      var supportEnquiryButton;
-      var supportEnquiryStatus;
       var themeStorageKey = "guardian-support-hub-theme";
 
       function currentTheme() {
@@ -1040,52 +1030,9 @@
       function initialiseChatNavigation() {
         newChatButton = document.getElementById("new-chat-button");
         newChatStatus = document.getElementById("new-chat-status");
-        supportEnquiryButton = document.getElementById(
-          "support-enquiry-button"
-        );
-        supportEnquiryStatus = document.getElementById(
-          "support-enquiry-status"
-        );
 
         if (newChatButton) {
           newChatButton.addEventListener("click", requestNewChat);
-        }
-
-        if (supportEnquiryButton) {
-          supportEnquiryButton.addEventListener("click", startSupportEnquiry);
-        }
-      }
-
-      function startSupportEnquiry() {
-        var input = host && host.shadowRoot ?
-          host.shadowRoot.querySelector("textarea") : null;
-
-        if (!input) {
-          if (supportEnquiryStatus) {
-            supportEnquiryStatus.textContent =
-              "The chat is still loading. Try again shortly.";
-          }
-          return;
-        }
-
-        var prompt = "I would like to submit an enquiry to DMD.";
-        var valueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLTextAreaElement.prototype,
-          "value"
-        ).set;
-
-        valueSetter.call(input, prompt);
-        input.dispatchEvent(new InputEvent("input", {
-          bubbles: true,
-          inputType: "insertText",
-          data: prompt
-        }));
-        input.focus();
-        input.scrollIntoView({ block: "nearest" });
-
-        if (supportEnquiryStatus) {
-          supportEnquiryStatus.textContent =
-            "Enquiry request added to the chat. Review and send it.";
         }
       }
 
@@ -1242,11 +1189,6 @@
         if (newChatButton) {
           newChatButton.disabled = false;
           newChatButton.removeAttribute("disabled");
-        }
-
-        if (supportEnquiryButton) {
-          supportEnquiryButton.disabled = false;
-          supportEnquiryButton.removeAttribute("disabled");
         }
 
         if (loader) {

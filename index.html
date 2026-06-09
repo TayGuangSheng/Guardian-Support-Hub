@@ -919,13 +919,6 @@
         font-size: clamp(1.875rem, 8.5vw, 2rem);
       }
 
-      #theme-toggle {
-        position: fixed;
-        top: calc(var(--app-header-height) + 0.75rem);
-        right: 0.75rem;
-        z-index: 18;
-      }
-
       #webchat button {
         min-width: 3rem;
         min-height: 3rem;
@@ -957,12 +950,8 @@
         height: 100%;
       }
 
-      .mobile-nav-toggle {
+      :root.auth-service .mobile-nav-toggle {
         display: inline-flex;
-        position: absolute;
-        top: 0.75rem;
-        left: 0.75rem;
-        z-index: 8;
       }
 
       .support-panel.support-panel--drawer {
@@ -1042,6 +1031,20 @@
         >
         <span class="brand-title">Guardian Support Hub</span>
       </span>
+
+      <sgds-icon-button
+        id="mobile-nav-toggle"
+        class="mobile-nav-toggle"
+        slot="end"
+        name="menu"
+        size="md"
+        tone="neutral"
+        variant="outline"
+        ariaLabel="Open chat menu"
+        aria-controls="mobile-nav-drawer"
+        aria-expanded="false"
+        title="Open chat menu"
+      ></sgds-icon-button>
 
       <sgds-icon-button
         id="theme-toggle"
@@ -1140,19 +1143,6 @@
 
   <main class="chat-main" aria-labelledby="page-title">
     <h1 id="page-title" class="visually-hidden">Guardian Support Hub</h1>
-
-    <sgds-icon-button
-      id="mobile-nav-toggle"
-      class="mobile-nav-toggle"
-      name="menu"
-      size="md"
-      tone="neutral"
-      variant="outline"
-      ariaLabel="Open chat menu"
-      aria-controls="mobile-nav-drawer"
-      aria-expanded="false"
-      title="Open chat menu"
-    ></sgds-icon-button>
 
     <div class="chat-workspace">
       <aside class="support-panel" aria-label="Chat navigation">
@@ -1501,6 +1491,7 @@
           return;
         }
 
+        mobileNavToggle.setAttribute("name", "menu");
         supportPanelMarker = document.createComment("support-panel-position");
         supportPanel.parentNode.insertBefore(supportPanelMarker, supportPanel);
         mobileNavigationQuery = window.matchMedia("(max-width: 64rem)");
